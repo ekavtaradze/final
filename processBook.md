@@ -65,3 +65,19 @@ Joining the two datasets is hard because the mission names do not match up
 Trying to come up with possible visualization for the data that we do have
 
 Tasks for the next meeting on Thursday - 10.03.2021 - Trying to come up with possible visualization for the data that we do have + sketches
+
+Meeting 3
+
+Reviewed each others sketches of the ideas
+
+Decided on:
+  - Inspired by the prof suggestion of XKCD LOTR diagram https://xkcd.com/657/
+  - Sankey Diagram utilizing NASA astronauts data to map their "path" in life
+  - Accompanying map of the world(2d) indicating their birthplace
+  - Hovering over the birthplace would highlight the "path" of that astronaut on the Sankey Diagram
+  - Data Used: https://www.kaggle.com/nasa/astronaut-yearbook
+  Sketches:
+
+  ![Sankey](/brainStormIdeas/IMG_0043.png)
+
+  [Nick Image]
