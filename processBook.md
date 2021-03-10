@@ -77,7 +77,7 @@ Decided on:
   - Hovering over the birthplace would highlight the "path" of that astronaut on the Sankey Diagram
   - Data Used: https://www.kaggle.com/nasa/astronaut-yearbook
   Sketches:
+   Insert Nick Globe Image
+  ![Sankey](/brainStormIdeas/IMG_0043.PNG)
 
-  ![Sankey](/brainStormIdeas/IMG_0043.png)
 
-  [Nick Image]
