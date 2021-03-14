@@ -2,9 +2,12 @@
     // Constants
     const width = 2000;
     const height = 600;
+    const scale = 500;
     const margin = {top: 10, right: 5, bottom: 15, left: 20},
         svgWidth = width - margin.left - margin.right,
         svgHeight = height - margin.top - margin.bottom;
+
+    const zoomOutLimit = 0.4;
 
     //Create an SVG
     var svg = d3.select("body")
@@ -13,6 +16,7 @@
         .attr("height", svgHeight)
         .attr("id", 'map')
         .attr("class", "svgMap")
+        .attr("tabindex", 1)
 
 
     //Import the geojson for the world
@@ -27,16 +31,18 @@
      *
      * @param countries
      */
-    function createMap(countries){
+    function createMap(countries)
+    {
 
         const projection = d3.geoCylindricalStereographic()
-            .scale(200);
+            .scale(scale)
 
         const geoPath = d3.geoPath()
             .projection(projection)
 
+        let map = svg.append("g");
 
-        svg.selectAll('path')
+        map.selectAll('path')
             .data(countries.features)
             .enter()
             .append('path')
@@ -45,24 +51,35 @@
             .attr('stroke', '#252525')
             .attr('class', function(d){return d.properties.name})
             .attr('fill', '#FFFFFF')
-            .attr('transform', 'translate(' + svgWidth/4.5 + ',' + 100 + ')');
 
-            //Zoom on map
+            // Zoom on map
             var mapZoom = d3.zoom()
               .on('zoom', zoomed);
 
             var zoomSettings = d3.zoomIdentity
-              .translate(250, 250)
-              .scale(120);
+              .translate(width/3, height/2)
+              .scale(zoomOutLimit);
 
-            d3.select('#map')
-              .call(mapZoom)
-              .call(mapZoom.transform, zoomSettings);
+            map.call(mapZoom)
+              .call(mapZoom.transform, zoomSettings)
 
-            function zoomed(e) {
-              projection.translate([e.transform.x, e.transform.y])
-                .scale(e.transform.k);
-              d3.select('#map').selectAll('path')
-                .attr('d', geoPath);
+
+            function zoomed(e)
+            {
+                //console.log(e.transform.k);
+                if (e.transform.k >= zoomOutLimit)
+                {
+                    map.selectAll('path').attr('transform', e.transform);
+                }
+                else 
+                {
+                  e.transform.k = zoomOutLimit;
+                }
+                
+
+                // // Zoom limiting
+                // 
+
+              
             }
     }
