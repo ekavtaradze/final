@@ -11,6 +11,7 @@
         .append("svg")
         .attr("width", svgWidth)
         .attr("height", svgHeight)
+        .attr("id", 'map')
         .attr("class", "svgMap")
 
 
@@ -44,5 +45,24 @@
             .attr('stroke', '#252525')
             .attr('class', function(d){return d.properties.name})
             .attr('fill', '#FFFFFF')
-            .attr('transform', 'translate(' + svgWidth/4.5 + ',' + 100 + ')')
+            .attr('transform', 'translate(' + svgWidth/4.5 + ',' + 100 + ')');
+
+            //Zoom on map
+            var mapZoom = d3.zoom()
+              .on('zoom', zoomed);
+
+            var zoomSettings = d3.zoomIdentity
+              .translate(250, 250)
+              .scale(120);
+
+            d3.select('#map')
+              .call(mapZoom)
+              .call(mapZoom.transform, zoomSettings);
+
+            function zoomed(e) {
+              projection.translate([e.transform.x, e.transform.y])
+                .scale(e.transform.k);
+              d3.select('#map').selectAll('path')
+                .attr('d', geoPath);
+            }
     }
