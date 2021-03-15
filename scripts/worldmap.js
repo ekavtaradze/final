@@ -9,7 +9,7 @@
 
     const zoomOutLimit = 0.4;
 
-function main()
+function main(countries)
 {
     console.log("here");
     //Create an SVG
@@ -19,14 +19,14 @@ function main()
         .attr("height", svgHeight);
       //  .attr("class", "svgMap")
       //  .attr("tabindex", 1);
+    createMap(countries);
 
-
-    //Import the geojson for the world
-    Promise.all([
-        d3.json('geojson/worldmap.geo.json')
-    ]).then( ([countries]) => {
-        createMap(countries);
-    })
+    // //Import the geojson for the world
+    // Promise.all([
+    //     d3.json('geojson/worldmap.geo.json')
+    // ]).then( ([countries]) => {
+    //     createMap(countries);
+    // })
 
     /**
      * The function which creates the worldmap from the geo.json file.

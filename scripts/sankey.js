@@ -1,21 +1,24 @@
-function sankey(){
-  console.log("here");
-  // set the dimensions and marginSs of the graph
+function sankey(data) {
+  console.log("Sankey Start");
+
+  var windowWidth = window.innerWidth * (0.6);
+  var windowHeight = window.innerHeight * (0.4);
   var marginS = {
       top: 10,
       right: 10,
       bottom: 10,
       left: 10
     },
-    widthS = 500 - marginS.left - marginS.right,
-    heightS = 300 - marginS.top - marginS.bottom;
+    widthS = windowWidth - marginS.left - marginS.right,
+    heightS = windowHeight - marginS.top - marginS.bottom;
 
-  // format variables
   var formatNumber = d3.format(",.0f"), // zero decimal places
     format = function(d) {
       return formatNumber(d);
     };
-  var  color = d3.scaleOrdinal(d3.schemeCategory10);
+
+
+  var color = d3.scaleOrdinal(d3.schemeCategory10);
 
   // append the svg object to the body of the page
   var svgSankey = d3.select("#my_dataviz").append("svg")
@@ -25,24 +28,40 @@ function sankey(){
     .attr("transform",
       "translate(" + marginS.left + "," + marginS.top + ")");
 
+  var defs = svgSankey.append("defs");
+  defs.append("pattern")
+    .attr("id", "bg")
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 860)
+    .attr('height', 400)
+    .append("svg:image")
+    .attr("xlink:href", "img/space.jpg")
+    .attr("width", 860)
+    .attr("height", 400)
+  //  .attr("x", 0)
+  //  .attr("y", 0)
+    ;
   // Set the sankey diagram properties
   var sankey = d3.sankey()
     .nodeWidth(36)
     .nodePadding(40)
     .size([widthS, heightS]);
+  //  .align('justify');
 
   var path = sankey.links();
-
+  var graph;
+  processCSV(data);
   // load the data
-  d3.csv("sankey.csv").then(function(data) {
-
-    //set up graph in same style as original example but empty
+  //  d3.csv("sankey.csv").then(function(data) {
+  function processCSV(data) {
+    //console.log(data);
     sankeydata = {
       "nodes": [],
       "links": []
     };
 
     data.forEach(function(d) {
+    //  console.log(d);
       sankeydata.nodes.push({
         "name": d.source
       });
@@ -52,7 +71,8 @@ function sankey(){
       sankeydata.links.push({
         "source": d.source,
         "target": d.target,
-        "value": +d.value
+        "value": +d.value,
+        "color": d.color
       });
     });
 
@@ -77,9 +97,15 @@ function sankey(){
         "name": d
       };
     });
-
+    //console.log(sankeydata);
     graph = sankey(sankeydata);
+    console.log(graph);
+    build();
+  }
 
+
+  //});
+  function build() {
     // add in the links
     var link = svgSankey.append("g").selectAll(".link")
       .data(graph.links)
@@ -88,7 +114,12 @@ function sankey(){
       .attr("d", d3.sankeyLinkHorizontal())
       .attr("stroke-width", function(d) {
         return d.width;
+      })
+      .style("stroke-dasharray", ("3,3")) 
+      .attr("stroke", function(d) {
+        return d.color;
       });
+    //  .attr();
 
     // add the link titles
     link.append("title")
@@ -115,9 +146,10 @@ function sankey(){
         return d.y1 - d.y0;
       })
       .attr("width", sankey.nodeWidth())
-      .style("fill", function(d) {
-        return d.color = color(d.name.replace(/ .*/, ""));
-      })
+      // .style("fill", function(d) {
+      //   return d.color = color(d.name.replace(/ .*/, ""));
+      // })
+      .attr("fill", "url(#bg)")
       .style("stroke", function(d) {
         return d3.rgb(d.color).darker(2);
       })
@@ -146,5 +178,6 @@ function sankey(){
         return d.x1 + 6;
       })
       .attr("text-anchor", "start");
-  });
+  }
+
 }

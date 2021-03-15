@@ -22,7 +22,7 @@
 
       .link {
         fill: none;
-        stroke: #000;
+        /* stroke: darkblue; */
         stroke-opacity: .2;
       }
 
@@ -34,14 +34,19 @@
 </head>
 
 <body>
-   <div class="row">
-    <div id="my_dataviz"> </div>
     <div id = 'map'> </div>
-  </div>
-
+    <div id="my_dataviz">
+</div>
     <script>
-    main();
-    sankey();
+    Promise.all([
+        d3.json('geojson/worldmap.geo.json'),
+        d3.csv('data/sankey.csv')
+    ]).then( ([countries, sankeydata]) => {
+        main(countries);
+        sankey(sankeydata);
+    })
+  //  main(countries);
+  //  sankey();
     </script>
 
 </body>
