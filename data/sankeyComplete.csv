@@ -1,0 +1,81 @@
+source,target,value
+Male,Army,1
+Male,Air Force,2
+Male,Navy,1
+Male,Marine Corps,0
+Male,Coast Guard,0
+Male,Bachelors,285
+Male,Graduate,18
+Male,Space Flight,0
+Male,Space Walk,0
+Male,Active,0
+Male,Management,0
+Male,Retired,0
+Male,Deceased,0
+Female,Army,0
+Female,Air Force,0
+Female,Navy,0
+Female,Marine Corps,0
+Female,Coast Guard,0
+Female,Bachelors,50
+Female,Graduate,0
+Female,Space Flight,0
+Female,Space Walk,0
+Female,Active,0
+Female,Management,0
+Female,Retired,0
+Female,Deceased,0
+Bachelors,Army,1
+Bachelors,Air Force,14
+Bachelors,Navy,11
+Bachelors,Marine Corps,8
+Bachelors,Coast Guard,0
+Bachelors,Graduate,280
+Bachelors,Space Flight,12
+Bachelors,Space Walk,0
+Bachelors,Active,1
+Bachelors,Management,1
+Bachelors,Retired,9
+Bachelors,Deceased,1
+Graduate,Army,15
+Graduate,Air Force,73
+Graduate,Navy,58
+Graduate,Marine Corps,16
+Graduate,Coast Guard,2
+Graduate,Space Flight,121
+Graduate,Space Walk,0
+Graduate,Active,22
+Graduate,Management,14
+Graduate,Retired,78
+Graduate,Deceased,20
+Army,Space Flight,16
+Army,Space Walk,0
+Army,Active,5
+Army,Management,4
+Army,Retired,8
+Army,Deceased,0
+Air Force,Space Flight,83
+Air Force,Space Walk,0
+Air Force,Active,11
+Air Force,Management,6
+Air Force,Retired,56
+Air Force,Deceased,14
+Navy,Space Flight,80
+Navy,Space Walk,0
+Navy,Active,8
+Navy,Management,9
+Navy,Retired,52
+Navy,Deceased,14
+Marine Corps,Space Flight,20
+Marine Corps,Space Walk,0
+Marine Corps,Active,2
+Marine Corps,Management,2
+Marine Corps,Retired,16
+Marine Corps,Deceased,2
+Coast Guard,Space Flight,2
+Coast Guard,Space Walk,0
+Coast Guard,Active,1
+Coast Guard,Management,0
+Coast Guard,Retired,1
+Coast Guard,Deceased,0
+SpaceFlight,SpaceWalk,135
