@@ -9,14 +9,14 @@
 
     const zoomOutLimit = 0.4;
 
+    console.log("here");
     //Create an SVG
-    var svg = d3.select("body")
+    var svg = d3.select("#map")
         .append("svg")
         .attr("width", svgWidth)
-        .attr("height", svgHeight)
-        .attr("id", 'map')
-        .attr("class", "svgMap")
-        .attr("tabindex", 1)
+        .attr("height", svgHeight);
+      //  .attr("class", "svgMap")
+      //  .attr("tabindex", 1);
 
 
     //Import the geojson for the world
@@ -71,15 +71,15 @@
                 {
                     map.selectAll('path').attr('transform', e.transform);
                 }
-                else 
+                else
                 {
                   e.transform.k = zoomOutLimit;
                 }
-                
+
 
                 // // Zoom limiting
-                // 
+                //
 
-              
+
             }
     }
