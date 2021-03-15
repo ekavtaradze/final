@@ -1,9 +1,0 @@
-source,target,value
-Start,Military,207
-Start,Bachelors,335
-Start,Graduate,298
-Start,Space Flight,334
-Start,Space Walks,135
-Bachelors,Graduate,280
-Bachelors,Space Flight,315
-Graduate,Space Flight,298
