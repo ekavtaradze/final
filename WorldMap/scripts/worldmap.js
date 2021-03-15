@@ -1,14 +1,16 @@
 
     // Constants
-    const width = 2000;
+    const width = 500;
     const height = 600;
-    const scale = 500;
+    const scale = 200;
     const margin = {top: 10, right: 5, bottom: 15, left: 20},
         svgWidth = width - margin.left - margin.right,
         svgHeight = height - margin.top - margin.bottom;
 
     const zoomOutLimit = 0.4;
 
+function main()
+{
     console.log("here");
     //Create an SVG
     var svg = d3.select("#map")
@@ -83,3 +85,4 @@
 
             }
     }
+}
