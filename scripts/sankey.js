@@ -115,10 +115,9 @@ function sankey(data) {
       .attr("stroke-width", function(d) {
         return d.width;
       })
-      .style("stroke-dasharray", ("3,3")) 
-      .attr("stroke", function(d) {
-        return d.color;
-      });
+    //  .style("stroke-dasharray", ("3,3"))
+      .attr("stroke",'url(#bg)');
+    //  function(d) { return d.color; });
     //  .attr();
 
     // add the link titles
