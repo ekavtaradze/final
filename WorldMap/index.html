@@ -29,18 +29,20 @@
       .link:hover {
         stroke-opacity: .5;
       }
+      .row {
+        display: flex;
+      }
     </style>
 </head>
 
-<body onload = main()>
-   <div>
-    <div id = 'map'> </div>
-  </div>
-  <div>
+<body>
+   <div class="row">
     <div id="my_dataviz"> </div>
+    <div id = 'map'> </div>
   </div>
 
     <script>
+    main();
     sankey();
     </script>
 

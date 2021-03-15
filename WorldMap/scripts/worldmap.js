@@ -1,7 +1,7 @@
 
     // Constants
     const width = 500;
-    const height = 600;
+    const height = 300;
     const scale = 200;
     const margin = {top: 10, right: 5, bottom: 15, left: 20},
         svgWidth = width - margin.left - margin.right,

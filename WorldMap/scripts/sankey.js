@@ -7,7 +7,7 @@ function sankey(){
       bottom: 10,
       left: 10
     },
-    widthS = 900 - marginS.left - marginS.right,
+    widthS = 500 - marginS.left - marginS.right,
     heightS = 300 - marginS.top - marginS.bottom;
 
   // format variables
