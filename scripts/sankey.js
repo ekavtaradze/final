@@ -5,12 +5,12 @@ function sankey(data) {
   var windowHeight = window.innerHeight * (0.6);
   var marginS = {
       top: 10,
-      right: 10,
+      right: 250,
       bottom: 10,
-      left: 10
+      left: 175
     },
-    widthS = windowWidth - marginS.left - marginS.right,
-    heightS = windowHeight - marginS.top - marginS.bottom;
+    widthS = 2000 - marginS.left - marginS.right,
+    heightS = 300 - marginS.top - marginS.bottom;
 
   var formatNumber = d3.format(",.0f"), // zero decimal places
     format = function(d) {
