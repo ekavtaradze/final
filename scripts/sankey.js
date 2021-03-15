@@ -1,8 +1,8 @@
 function sankey(data) {
   console.log("Sankey Start");
 
-  var windowWidth = window.innerWidth * (0.6);
-  var windowHeight = window.innerHeight * (0.4);
+  var windowWidth = window.innerWidth * (0.8);
+  var windowHeight = window.innerHeight * (0.6);
   var marginS = {
       top: 10,
       right: 10,
@@ -115,8 +115,9 @@ function sankey(data) {
       .attr("stroke-width", function(d) {
         return d.width;
       })
-    //  .style("stroke-dasharray", ("3,3"))
-      .attr("stroke",'url(#bg)');
+    //  .attr("stroke", "blue");
+    // .style("stroke-dasharray", ("3,3"))
+     .attr("stroke",'url(#bg)');
     //  function(d) { return d.color; });
     //  .attr();
 
@@ -145,10 +146,10 @@ function sankey(data) {
         return d.y1 - d.y0;
       })
       .attr("width", sankey.nodeWidth())
-      // .style("fill", function(d) {
-      //   return d.color = color(d.name.replace(/ .*/, ""));
-      // })
-      .attr("fill", "url(#bg)")
+      .style("fill", function(d) {
+        return d.color = color(d.name.replace(/ .*/, ""));
+      })
+      //.attr("fill", "url(#bg)")
       .style("stroke", function(d) {
         return d3.rgb(d.color).darker(2);
       })

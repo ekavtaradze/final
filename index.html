@@ -40,9 +40,9 @@
     <script>
     Promise.all([
         d3.json('geojson/worldmap.geo.json'),
-        d3.csv('data/sankey.csv')
+        d3.csv('data/sankeyCompleteNoZero.csv')
     ]).then( ([countries, sankeydata]) => {
-        main(countries);
+       main(countries);
         sankey(sankeydata);
     })
   //  main(countries);
