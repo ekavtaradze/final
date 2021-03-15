@@ -1,16 +1,16 @@
 function makeSankey(data) {
   console.log("Sankey Start");
 
-  var windowWidth = window.innerWidth * (0.8);
-  var windowHeight = window.innerHeight * (0.6);
+  var windowWidth = 1500;//window.innerWidth * (0.9);
+  var windowHeight = 700;//window.innerHeight * (0.7);
   var marginS = {
       top: 10,
       right: 250,
       bottom: 10,
       left: 175
     },
-    widthS = 2000 - marginS.left - marginS.right,
-    heightS = 300 - marginS.top - marginS.bottom;
+    widthS = windowWidth - marginS.left - marginS.right,
+    heightS = windowHeight - marginS.top - marginS.bottom;
 
   var formatNumber = d3.format(",.0f"), // zero decimal places
     format = function(d) {
@@ -40,12 +40,13 @@ function makeSankey(data) {
     .attr("height", 400)
   //  .attr("x", 0)
   //  .attr("y", 0)
-    ;
+  ;
   // Set the sankey diagram properties
   var sankey = d3.sankey()
     .nodeWidth(36)
     .nodePadding(40)
     .size([widthS, heightS]);
+  //.align('justify');
   //  .align('justify');
 
   var path = sankey.links();
@@ -61,7 +62,7 @@ function makeSankey(data) {
     };
 
     data.forEach(function(d) {
-    //  console.log(d);
+      //  console.log(d);
       sankeydata.nodes.push({
         "name": d.source
       });
@@ -106,18 +107,40 @@ function makeSankey(data) {
 
   //});
   function build() {
-    // add in the links
+
+    const color = d3.scaleOrdinal()
+      .domain([
+        'Male', 'Female', 'Bachelors',
+        'Coast Guard', 'Air Force', 'Army',
+        'Graduate', 'Marine Corps', 'Navy',
+        'SpaceFlight', 'Active', 'Deceased',
+        'Management', 'Space Flight', 'Retired'
+      ])
+      .range([
+        '#90eb9d', '#f9d057', '#f29e2e',
+        '#00ccbc', '#d7191c', '#444c3c',
+        '#CC4040', 'red', 'orange',
+        'green', 'yellow', 'purple',
+        'grey', 'brown', 'teal'
+      ]);
+
     var link = svgSankey.append("g").selectAll(".link")
       .data(graph.links)
       .enter().append("path")
       .attr("class", "link")
       .attr("d", d3.sankeyLinkHorizontal())
       .attr("stroke-width", function(d) {
-        return d.width;
-      })
-    //  .attr("stroke", "blue");
+        return d.width + 5;
+      });
+
+    //  svgSankey.nodeAlign(d3.sankeyLeft);
+    //   .attr("stroke", d => edgeColor === "none" ? "#aaa"
+    // : edgeColor === "path" ? d.uid
+    // : edgeColor === "input" ? color(d.source)
+    // : color(d.target));
+    //.attr("stroke", "blue");
     // .style("stroke-dasharray", ("3,3"))
-     .attr("stroke",'url(#bg)');
+    //   .attr("stroke",'url(#bg)');
     //  function(d) { return d.color; });
     //  .attr();
 
@@ -178,6 +201,56 @@ function makeSankey(data) {
         return d.x1 + 6;
       })
       .attr("text-anchor", "start");
+
+    //https://bl.ocks.org/micahstubbs/3c0cb0c0de021e0d9653032784c035e9
+    // add gradient to links
+    link.style('stroke', (d, i) => {
+      //console.log('d from gradient stroke func', d);
+
+      // make unique gradient ids
+      const gradientID = `gradient${i}`;
+
+      const startColor = d.source.color;
+      const stopColor = d.target.color;
+
+    //  console.log('startColor', startColor);
+    //  console.log('stopColor', stopColor);
+
+      const linearGradient = defs.append('linearGradient')
+        .attr('id', gradientID);
+
+      linearGradient.selectAll('stop')
+        .data([{
+            offset: '10%',
+            color: startColor
+          },
+          {
+            offset: '90%',
+            color: stopColor
+          }
+        ])
+        .enter().append('stop')
+        .attr('offset', d => {
+          //console.log('d.offset', d.offset);
+          return d.offset;
+        })
+        .attr('stop-color', d => {
+        //  console.log('d.color', d.color);
+          return d.color;
+        });
+
+      return `url(#${gradientID})`;
+    });
+
+    // the function for moving the nodes
+    function dragmove(d) {
+      d3.select(this).attr('transform',
+        `translate(${d.x = Math.max(0, Math.min(width - d.dx, d3.event.x))},${d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))})`);
+      sankey.relayout();
+      link.attr('d', path);
+    };
+
+
   }
 
 }
