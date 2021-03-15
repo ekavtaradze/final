@@ -13,132 +13,78 @@
 
     var mapSvg;
 
-function main(countries, cities, astronauts)
+/**
+ * The function which creates the worldmap from the geo.json file.
+ *
+ * @param geoData
+*/
+function makeWorldMap(countries, astronautCities)
 {
     mapSvg = d3.select("#map")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
-    createMap(countries, filterCities(cities, astronauts));
+    const projection = d3.geoCylindricalStereographic()
+        .scale(scale)
 
-}
+    const geoPath = d3.geoPath()
+        .projection(projection)
 
-function filterCities(cities, astronauts)
-{
-    // Query select the cities the astronauts are from
-    let astronautCities = Object.assign([], astronauts);
-    astronautCities = astronautCities.map(function(a)
-    {
-        return a['Birth Place'].toUpperCase().split(",")[0];
-    });
+    let map = mapSvg.append("g");
 
-    let previousCity = "";
-    let filteredCities = {features: []};
-
-    filteredCities.features = cities.features.filter((city) =>
-    {
-        for (let i = 0; i < astronautCities.length; i++)
+    map.selectAll('path')
+        .data(countries.features)
+        .enter()
+        .append('path')
+        .attr('d', function(d){return geoPath(d)})
+        .attr('stroke-width', 1)
+        .attr('stroke', '#FFFFFF')
+        .attr('class', function(d){return d.properties.name})
+        .attr('fill', '#000000')
+        .on("click", function()
         {
-            if (astronautCities[i] === city.properties.NAME)
+            if(d3.select(this).attr('fill') === colorDefault)
             {
-                // if (city.properties.NAME === previousCity)
-                // {
-                //     console.log("Dupe: " + city.properties.NAME)
-                // }
-                // else
-                // {
-                //     previousCity = city.properties.NAME;
-                // }
-
-                return true;
+                d3.select(this).attr("fill", colorClicked);
             }
-        }
-    });
+            else
+            {
+                d3.select(this).attr("fill", colorDefault);
+            }
+        });
 
+    map.selectAll('path')
+        .data(astronautCities.features)
+        .enter()
+        .append('path')
+        .attr('d', function(d){return geoPath(d)})
+        .attr('stroke-width', 1)
+        .attr('stroke', '#FFFF00')
+        .attr('class', function(d){return d.properties.Name})
+        .attr('fill', '#FFFFFF');
 
+        // Zoom on map
+        var mapZoom = d3.zoom()
+            .on('zoom', zoomed);
 
+        var zoomSettings = d3.zoomIdentity
+            .translate(width/3, height/2)
+            .scale(zoomOutLimit);
 
-    return filteredCities;
-}
+        map.call(mapZoom)
+            .call(mapZoom.transform, zoomSettings)
 
-
-    /**
-     * The function which creates the worldmap from the geo.json file.
-     *
-     * @param geoData
-     */
-     function createMap(countries, cities)
-     {
-
-         const projection = d3.geoCylindricalStereographic()
-             .scale(scale)
-
-         const geoPath = d3.geoPath()
-             .projection(projection)
-
-         let map = mapSvg.append("g");
-
-         map.selectAll('path')
-             .data(countries.features)
-             .enter()
-             .append('path')
-             .attr('d', function(d){return geoPath(d)})
-             .attr('stroke-width', 1)
-             .attr('stroke', '#FFFFFF')
-             .attr('class', function(d){return d.properties.name})
-             .attr('fill', '#000000')
-             .on("click", function(){
-                 if(d3.select(this).attr('fill') === colorDefault){
-                     console.log("Color is not white!")
-                     d3.select(this).attr("fill", colorClicked);
-                 }
-                 else{
-                     console.log("Color is white")
-                     d3.select(this).attr("fill", colorDefault);
-                 }
-             })
-
-        map.selectAll('path')
-             .data(cities.features)
-             .enter()
-             .append('path')
-             .attr('d', function(d){return geoPath(d)})
-             .attr('stroke-width', 1)
-             .attr('stroke', '#FFFF00')
-             .attr('class', function(d){return d.properties.name})
-             .attr('fill', '#FFFFFF');
-
-
-
-             // Zoom on map
-             var mapZoom = d3.zoom()
-               .on('zoom', zoomed);
-
-             var zoomSettings = d3.zoomIdentity
-               .translate(width/3, height/2)
-               .scale(zoomOutLimit);
-
-             map.call(mapZoom)
-               .call(mapZoom.transform, zoomSettings)
-
-
-             function zoomed(e)
-             {
-                 //console.log(e.transform.k);
-                 if (e.transform.k >= zoomOutLimit)
-                 {
-                     map.selectAll('path').attr('transform', e.transform);
-                 }
-                 else
-                 {
-                   e.transform.k = zoomOutLimit;
-                 }
-
-
-                 // // Zoom limiting
-                 //
-
-
-             }
+        function zoomed(e)
+            {
+                //console.log(e.transform.k);
+                if (e.transform.k >= zoomOutLimit)
+                {
+                    map.selectAll('path').attr('transform', e.transform);
+                }
+                else
+                {
+                    e.transform.k = zoomOutLimit;
+                }
+            }
      }

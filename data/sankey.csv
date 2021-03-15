@@ -1,9 +1,0 @@
-source,target,value,color
-Start,Military,207,blue
-Start,Bachelors,335,blue
-Start,Graduate,298,darkblue
-Start,Space Flight,334,black
-Start,Space Walks,135,grey
-Bachelors,Graduate,280,green
-Bachelors,Space Flight,315,purple
-Graduate,Space Flight,298,yellow

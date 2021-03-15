@@ -1,4 +1,4 @@
-function sankey(data) {
+function makeSankey(data) {
   console.log("Sankey Start");
 
   var windowWidth = window.innerWidth * (0.8);
