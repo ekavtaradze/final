@@ -6,6 +6,8 @@
     const margin = {top: 10, right: 5, bottom: 15, left: 20},
         svgWidth = width - margin.left - margin.right,
         svgHeight = height - margin.top - margin.bottom;
+    const colorClicked = "#000000";
+    const colorDefault = "#FFFFFF";
 
     const zoomOutLimit = 0.5;
 
@@ -83,9 +85,19 @@ function filterCities(cities, astronauts)
              .append('path')
              .attr('d', function(d){return geoPath(d)})
              .attr('stroke-width', 1)
-             .attr('stroke', '#252525')
+             .attr('stroke', '#FFFFFF')
              .attr('class', function(d){return d.properties.name})
-             .attr('fill', '#000000');
+             .attr('fill', '#000000')
+             .on("click", function(){
+                 if(d3.select(this).attr('fill') === colorDefault){
+                     console.log("Color is not white!")
+                     d3.select(this).attr("fill", colorClicked);
+                 }
+                 else{
+                     console.log("Color is white")
+                     d3.select(this).attr("fill", colorDefault);
+                 }
+             })
 
         map.selectAll('path')
              .data(cities.features)
