@@ -3,11 +3,11 @@ function sankey(){
   // set the dimensions and marginSs of the graph
   var marginS = {
       top: 10,
-      right: 10,
+      right: 250,
       bottom: 10,
-      left: 10
+      left: 175
     },
-    widthS = 900 - marginS.left - marginS.right,
+    widthS = 2000 - marginS.left - marginS.right,
     heightS = 300 - marginS.top - marginS.bottom;
 
   // format variables

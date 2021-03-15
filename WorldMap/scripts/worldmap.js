@@ -1,11 +1,13 @@
 
     // Constants
-    const width = 500;
-    const height = 600;
-    const scale = 200;
+    const width = 2000;
+    const height = 650;
+    const scale = 500;
     const margin = {top: 10, right: 5, bottom: 15, left: 20},
         svgWidth = width - margin.left - margin.right,
         svgHeight = height - margin.top - margin.bottom;
+    const colorClicked = "#FF0000";
+    const colorDefault = "#FFFFFF";
 
     const zoomOutLimit = 0.4;
 
@@ -13,13 +15,10 @@ function main()
 {
     console.log("here");
     //Create an SVG
-    var svg = d3.select("#map")
+    const svg = d3.select("#map")
         .append("svg")
         .attr("width", svgWidth)
         .attr("height", svgHeight);
-      //  .attr("class", "svgMap")
-      //  .attr("tabindex", 1);
-
 
     //Import the geojson for the world
     Promise.all([
@@ -52,36 +51,35 @@ function main()
             .attr('stroke-width', 1)
             .attr('stroke', '#252525')
             .attr('class', function(d){return d.properties.name})
-            .attr('fill', '#FFFFFF')
-
+            .attr('fill', colorDefault)
+            .style("background-color", "lightsteeleblue")
+            .on("click", function(){
+                if(d3.select(this).attr('fill') === colorDefault){
+                    console.log("Color is not white!")
+                    d3.select(this).attr("fill", colorClicked);
+                }
+                else{
+                    console.log("Color is white")
+                    d3.select(this).attr("fill", colorDefault);
+                }
+            })
             // Zoom on map
-            var mapZoom = d3.zoom()
+            const mapZoom = d3.zoom()
               .on('zoom', zoomed);
 
-            var zoomSettings = d3.zoomIdentity
+            const zoomSettings = d3.zoomIdentity
               .translate(width/3, height/2)
               .scale(zoomOutLimit);
 
             map.call(mapZoom)
               .call(mapZoom.transform, zoomSettings)
 
-
             function zoomed(e)
             {
                 //console.log(e.transform.k);
                 if (e.transform.k >= zoomOutLimit)
-                {
-                    map.selectAll('path').attr('transform', e.transform);
-                }
-                else
-                {
-                  e.transform.k = zoomOutLimit;
-                }
-
-
-                // // Zoom limiting
-                //
-
+                {map.selectAll('path').attr('transform', e.transform);}
+                else {e.transform.k = zoomOutLimit;}
 
             }
     }
