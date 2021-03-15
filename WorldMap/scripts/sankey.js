@@ -18,7 +18,7 @@ function sankey(){
   var  color = d3.scaleOrdinal(d3.schemeCategory10);
 
   // append the svg object to the body of the page
-  var svg = d3.select("#my_dataviz").append("svg")
+  var svgSankey = d3.select("#my_dataviz").append("svg")
     .attr("width", widthS + marginS.left + marginS.right)
     .attr("height", heightS + marginS.top + marginS.bottom)
     .append("g")
@@ -81,13 +81,13 @@ function sankey(){
     graph = sankey(sankeydata);
 
     // add in the links
-    var link = svg.append("g").selectAll(".link")
+    var link = svgSankey.append("g").selectAll(".link")
       .data(graph.links)
       .enter().append("path")
       .attr("class", "link")
       .attr("d", d3.sankeyLinkHorizontal())
-      .attr("stroke-widthS", function(d) {
-        return d.widthS;
+      .attr("stroke-width", function(d) {
+        return d.width;
       });
 
     // add the link titles
@@ -98,7 +98,7 @@ function sankey(){
       });
 
     // add in the nodes
-    var node = svg.append("g").selectAll(".node")
+    var node = svgSankey.append("g").selectAll(".node")
       .data(graph.nodes)
       .enter().append("g")
       .attr("class", "node");
@@ -111,10 +111,10 @@ function sankey(){
       .attr("y", function(d) {
         return d.y0;
       })
-      .attr("heightS", function(d) {
+      .attr("height", function(d) {
         return d.y1 - d.y0;
       })
-      .attr("widthS", sankey.nodeWidth())
+      .attr("width", sankey.nodeWidth())
       .style("fill", function(d) {
         return d.color = color(d.name.replace(/ .*/, ""));
       })
