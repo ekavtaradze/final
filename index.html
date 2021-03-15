@@ -38,13 +38,25 @@
     <div id="my_dataviz">
 </div>
     <script>
+    // Promise.all([
+    //     d3.json('geojson/worldmap.geo.json'),
+    //     d3.csv('data/sankeyCompleteNoZero.csv')
+    // ]).then( ([countries, sankeydata]) => {
+    //    main(countries);
+    //
+    // })
     Promise.all([
-        d3.json('geojson/worldmap.geo.json'),
+        d3.json("geojson/worldmap.geo.json"),
+        d3.json("geojson/cities.geo.json"),
+        d3.csv("data/astronautsLongLat.csv"),
         d3.csv('data/sankeyCompleteNoZero.csv')
-    ]).then( ([countries, sankeydata]) => {
-       main(countries);
+        // Load sankey
+    ]).then( ([countries, cities, astronauts, sankeydata]) =>
+    {
+        main(countries, cities, astronauts);
         sankey(sankeydata);
-    })
+        // Should run sankey...
+    });
   //  main(countries);
   //  sankey();
     </script>
