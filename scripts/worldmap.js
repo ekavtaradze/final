@@ -124,22 +124,22 @@ function makeWorldMap(countries, astronautCities)
         
         let searchRadius = getRadiusTransform(gTransform.k);
 
+        let currentAstronauts = [];
+
         // Select all circles within the radius
         for (let i = 0; i < gAstronautCities.features.length; i++)
         {
             if (geoContains(gAstronautCities.features[i].geometry.coordinates, featureCoordinate, searchRadius))
             {
-                gCurrentAstronauts.push(gAstronautCities.features[i].properties);
+                currentAstronauts.push(gAstronautCities.features[i].properties);
 
-                console.log(gAstronautCities.features[i].properties['Birth Place']);
-                
                 d3.select("#" + "A" + gAstronautCities.features[i].properties.ID)
                     .attr("fill", astronautColorClicked);
             }
         }
-    });
 
-    
+        GetLinks(currentAstronauts);
+    });   
 }
 
 // Because d3's expects an exact coordinate and doesn't let me put in a proximity
