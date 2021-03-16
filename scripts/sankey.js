@@ -230,10 +230,17 @@ function makeSankey(data) {
       return `url(#${gradientID})`;
     });
 
+
     function highlight(source, target){
+      unHighlight();
       var highlighted = link.filter(d =>d.source.name === source && d.target.name === target);
-      highlighted.style('stroke', 'grey');
+      highlighted.style('stroke-opacity', 1);
     };
+
+    function unHighlight(){
+      link.style('stroke-opacity', 0.3);
+    };
+
 
 
     function dragmove(d) {
@@ -257,6 +264,8 @@ function makeSankey(data) {
     }
 
   }
+
+
   // // Radio button change
   //   d3.selectAll('.sankey-align').on('change', function() {
   //     console.log(this.value);

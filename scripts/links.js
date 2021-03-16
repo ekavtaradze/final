@@ -16,14 +16,14 @@ var space = ["Space Flight", "Space Walk"];
 var stat = ["Active", "Management", "Retired", "Deceased"];
 
 function GetLinks(astros){
-    
+
     //console.log(astros[0])
 
     for(let i = 0; i < astros.length; i++)
     {
         let astro = astros[i];
         let astroLinks = [];
-        
+
         if(astro["Gender"] != ""){
             let aGen = gen[0];
             if(astro["Gender"] == gen[1]){
@@ -31,15 +31,15 @@ function GetLinks(astros){
             }
             astroLinks.push(aGen)
         }
-        
+
         if(astro["Undergraduate Major"] != ""){
             astroLinks.push(school[0])
         }
-        
+
         if(astro["Graduate Major"] != ""){
             astroLinks.push(school[1])
         }
-        
+
         if(astro["Military Branch"] != ""){
             // set marine
             let aMil = mil[0];
@@ -57,15 +57,15 @@ function GetLinks(astros){
             }
             astroLinks.push(aMil)
         }
-        
+
         if(astro["Space Flights"] > 0){
             astroLinks.push(space[0])
-            
+
                 if(astro["Space Walks"] > 0){
                 astroLinks.push(space[1])
             }
         }
-        
+
         if(astro["Status"] != ""){
             let aStat = stat[0];
             for(let i = 1; i < stat.length; i++){
@@ -76,7 +76,7 @@ function GetLinks(astros){
             }
             astroLinks.push(aStat)
         }
-        
+
         console.log(astroLinks)
         //HighlightSankey(astroLinks);
     }
@@ -85,7 +85,7 @@ function GetLinks(astros){
 function HighlightSankey(links){
 	for(var i = 0; i < links.length -1; i++){
 		SankeyHighlightLink(links[i], links[i+1])
-		
+
 		if(links[i+1] == space[0]){
 			i+= 1;
 			if(links[i] == space[1]){
