@@ -16,7 +16,7 @@ var space = ["Space Flight", "Space Walk"];
 var stat = ["Active", "Management", "Retired", "Deceased"];
 
 function GetLinks(astros){
-
+    unHighlight();
     console.log(astros[0])
 
     for(let i = 0; i < astros.length; i++)
@@ -83,7 +83,6 @@ function GetLinks(astros){
 }
 
 function HighlightSankey(links){
-    unHighlight();
     let flag = 0;
     let last = 0;
 	for(let i = 0; i < links.length; i++){
