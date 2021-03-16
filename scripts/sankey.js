@@ -1,3 +1,6 @@
+
+var link;
+
 function makeSankey(data) {
   console.log("Sankey Start");
 
@@ -115,7 +118,7 @@ function makeSankey(data) {
         '#f2952e', '#FF4F00', 'grey'
       ]);
 
-    var link = links.selectAll(".link")
+    link = links.selectAll(".link")
       .data(graph.links)
       .enter().append("path")
       .attr("class", "link")
@@ -230,19 +233,6 @@ function makeSankey(data) {
       return `url(#${gradientID})`;
     });
 
-
-    function highlight(source, target){
-      unHighlight();
-      var highlighted = link.filter(d =>d.source.name === source && d.target.name === target);
-      highlighted.style('stroke-opacity', 1);
-    };
-
-    function unHighlight(){
-      link.style('stroke-opacity', 0.3);
-    };
-
-
-
     function dragmove(d) {
       d3.select(this)
         .select("rect")
@@ -282,3 +272,14 @@ function makeSankey(data) {
   //   });
 
 }
+
+function highlight(source, target){
+  console.log(source)
+  console.log(target)
+  var highlighted = link.filter(d =>d.source.name === source && d.target.name === target);
+  highlighted.style('stroke-opacity', 1);
+};
+
+function unHighlight(){
+  link.style('stroke-opacity', 0.3);
+};

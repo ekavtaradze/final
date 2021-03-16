@@ -17,7 +17,7 @@ var stat = ["Active", "Management", "Retired", "Deceased"];
 
 function GetLinks(astros){
 
-    //console.log(astros[0])
+    console.log(astros[0])
 
     for(let i = 0; i < astros.length; i++)
     {
@@ -78,19 +78,31 @@ function GetLinks(astros){
         }
 
         console.log(astroLinks)
-        //HighlightSankey(astroLinks);
+        HighlightSankey(astroLinks);
     }
 }
 
 function HighlightSankey(links){
-	for(var i = 0; i < links.length -1; i++){
-		SankeyHighlightLink(links[i], links[i+1])
+    unHighlight();
+    let flag = 0;
+    let last = 0;
+	for(let i = 0; i < links.length; i++){
+
+        if(flag == 1){
+            highlight(links[last], links[i])
+            flag = 0;
+        }
+        else{
+            highlight(links[i], links[i+1])
+        }
 
 		if(links[i+1] == space[0]){
-			i+= 1;
-			if(links[i] == space[1]){
-				SankeyHighlightLink(links[i], links[i+1])
-				i+= 1;
+            last = i;
+            flag = 1;
+			i += 1;
+			if(links[i+1] == space[1]){
+				highlight(links[i], links[i+1])
+				i += 1;
 			}
 		}
 	}
