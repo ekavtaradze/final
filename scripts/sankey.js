@@ -1,8 +1,8 @@
 function makeSankey(data) {
   console.log("Sankey Start");
 
-  var windowWidth = 1500;//window.innerWidth * (0.9);
-  var windowHeight = 500;//window.innerHeight * (0.7);
+  var windowWidth = 1500; //window.innerWidth * (0.9);
+  var windowHeight = 500; //window.innerHeight * (0.7);
   var marginS = {
       top: 10,
       right: 250,
@@ -31,15 +31,15 @@ function makeSankey(data) {
   var defs = svgSankey.append("defs");
   defs.append("pattern")
     .attr("id", "bg")
-    .attr('patternUnits', 'userSpaceOnUse')
-    .attr('width', 860)
-    .attr('height', 400)
-    .append("svg:image")
-    .attr("xlink:href", "img/space.jpg")
-    .attr("width", 860)
-    .attr("height", 400)
-  //  .attr("x", 0)
-  //  .attr("y", 0)
+   .attr('patternUnits', 'userSpaceOnUse')
+   .attr('width', 860)
+   .attr('height', 400)
+   .append("svg:image")
+   .attr("xlink:href", "img/space.jpg")
+   .attr("width", 860)
+   .attr("height", 400)
+  // .attr("x", 0)
+  // .attr("y", 0)
   ;
   // Set the sankey diagram properties
   var sankey = d3.sankey()
@@ -105,7 +105,7 @@ function makeSankey(data) {
     build();
   }
 
-sankey.nodeAlign(d3.sankeyLeft)
+  //sankey.nodeAlign(d3.sankeyLeft)
   //});
   function build() {
 
@@ -114,14 +114,14 @@ sankey.nodeAlign(d3.sankeyLeft)
         'Male', 'Female', 'Bachelors',
         'Coast Guard', 'Air Force', 'Army',
         'Graduate', 'Marine Corps', 'Navy',
-        'SpaceFlight', 'Active', 'Deceased',
+        'Space Walk', 'Active', 'Deceased',
         'Management', 'Space Flight', 'Retired'
       ])
       .range([
         '#90eb9d', '#f9d057', '#f29e2e',
-        '#00ccbc', '#d7191c', '#444c3c',
-        '#CC4040', 'red', 'orange',
-        'green', 'yellow', 'purple',
+        '#007AA5', '#00308f', '#4b5320',
+        '#cc4040', '#a77C29', '#000048',
+        '', 'yellow', '#451208',
         'grey', 'brown', 'teal'
       ]);
 
@@ -148,18 +148,18 @@ sankey.nodeAlign(d3.sankeyLeft)
       .enter().append("g")
       .attr("class", "node")
       .call(
-         d3
-           .drag()
-           .subject(function(d) {
-             return d;
-           })
-           .on("start", function() {
-             this.parentNode.appendChild(this);
-           })
-           .on("drag", dragmove)
-       );
-      // .call(d3.drag())
-      //   .on("drag", dragmove);
+        d3
+        .drag()
+        .subject(function(d) {
+          return d;
+        })
+        .on("start", function() {
+          this.parentNode.appendChild(this);
+        })
+        .on("drag", dragmove)
+      );
+    // .call(d3.drag())
+    //   .on("drag", dragmove);
 
     // add the rectangles for the nodes
     node.append("rect")
@@ -198,6 +198,7 @@ sankey.nodeAlign(d3.sankeyLeft)
       .text(function(d) {
         return d.name;
       })
+        .attr("font-weight", 700)
       .filter(function(d) {
         return d.x0 < widthS / 2;
       })
@@ -206,6 +207,18 @@ sankey.nodeAlign(d3.sankeyLeft)
       })
       .attr("text-anchor", "start");
 
+
+      // node.append("rect")
+      //   .attr("x", function(d) {
+      //     return d.x0 + 6;
+      //   })
+      //   .attr("y", function(d) {
+      //     return (d.y1 + d.y0) / 2;
+      //   }).attr("height", function(d) {
+      //           return 5;
+      //         })
+      //         .attr("width", 10)
+      //         .style("fill", "grey");
     //https://bl.ocks.org/micahstubbs/3c0cb0c0de021e0d9653032784c035e9
     // add gradient to links
     link.style('stroke', (d, i) => {
@@ -217,8 +230,8 @@ sankey.nodeAlign(d3.sankeyLeft)
       const startColor = d.source.color;
       const stopColor = d.target.color;
 
-    //  console.log('startColor', startColor);
-    //  console.log('stopColor', stopColor);
+      //  console.log('startColor', startColor);
+      //  console.log('stopColor', stopColor);
 
       const linearGradient = defs.append('linearGradient')
         .attr('id', gradientID);
@@ -239,29 +252,42 @@ sankey.nodeAlign(d3.sankeyLeft)
           return d.offset;
         })
         .attr('stop-color', d => {
-        //  console.log('d.color', d.color);
+          //  console.log('d.color', d.color);
           return d.color;
         });
 
       return `url(#${gradientID})`;
     });
 
+    //https://gist.github.com/mobidots/f86a31ce14a3227affd1c1287794d1a6
     // the function for moving the nodes
     function dragmove(d) {
       d3.select(this)
         .select("rect")
+        .attr("x", function(n) {
+          //  console.log(n);
+          n.x0 = Math.max(0, Math.min(n.x0 + d.dx, widthS - (n.x1 - n.x0)));
+          n.x1 = n.x0 + sankey.nodeWidth();
+
+          return n.x0;
+        })
         .attr("y", function(n) {
-        //  console.log(n);
+          //  console.log(n);
           n.y0 = Math.max(0, Math.min(n.y0 + d.dy, heightS - (n.y1 - n.y0)));
-          n.y1 = n.y0 + Math.abs(n.x0-n.x1);
+          n.y1 = n.y0 + (n.x0 - n.x1);
 
           return n.y0;
         });
 
       d3.select(this)
         .select("text")
+        .attr("x", function(n) {
+          //console.log((n.y0 + n.y1)/2);
+          return n.x0+6;
+        })
         .attr("y", function(n) {
-          return (n.y0 + n.y1) / 2;
+          //console.log((n.y0 + n.y1)/2);
+          return (n.y0 + n.y1)/2;
         });
 
       sankey.update(graph);
