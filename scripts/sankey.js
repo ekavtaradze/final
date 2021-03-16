@@ -41,17 +41,19 @@ function makeSankey(data) {
   // .attr("x", 0)
   // .attr("y", 0)
   ;
+
   // Set the sankey diagram properties
   var sankey = d3.sankey()
     .nodeWidth(36)
     .nodePadding(40)
     .size([widthS, heightS])
-    .nodeAlign(d3.sankeyRight);
+    .nodeAlign(d3.sankeyJustify);
   //.align('justify');
   //  .align('justify');
-
   var path = sankey.links();
   var graph;
+  var links = svgSankey.append("g");
+  var nodes = svgSankey.append("g");
   processCSV(data);
   // load the data
   //  d3.csv("sankey.csv").then(function(data) {
@@ -125,7 +127,7 @@ function makeSankey(data) {
         'grey', 'brown', 'teal'
       ]);
 
-    var link = svgSankey.append("g").selectAll(".link")
+    var link = links.selectAll(".link")
       .data(graph.links)
       .enter().append("path")
       .attr("class", "link")
@@ -143,7 +145,7 @@ function makeSankey(data) {
       });
 
     // add in the nodes
-    var node = svgSankey.append("g").selectAll(".node")
+    var node = nodes.selectAll(".node")
       .data(graph.nodes)
       .enter().append("g")
       .attr("class", "node")
@@ -182,7 +184,7 @@ function makeSankey(data) {
       })
       .append("title")
       .text(function(d) {
-        return d.name + "\n" + format(d.value);
+        return d.name; //+ "\n" + format(d.value);
       });
 
     // add in the title for the nodes
@@ -278,22 +280,37 @@ function makeSankey(data) {
           return n.y0;
         });
 
-        //transforming x and y together did not work - one dimensions was always wrong
+
       d3.select(this)
         .select("text")
         .attr("x", function(n) {
           return n.x1 + 6;
+        })
+        .attr("y", function(n) {
+          return ((n.y1 + n.y0) / 2);
         });
-      d3.select(this).select("text")
-        .attr("transform", function(n) {
-          return "translate(" + (0) + "," + ((n.y1 + n.y0) / 2) + ")";
-        });
+      // d3.select(this).select("text")
+      //   .attr("transform", function(n) {
+      //     return "translate(" + (0) + "," + ((n.y1 + n.y0) / 2) + ")";
+      //   });
       sankey.update(graph);
       link.attr("d", d3.sankeyLinkHorizontal());
     }
 
-
-
   }
+  // // Radio button change
+  //   d3.selectAll('.sankey-align').on('change', function() {
+  //     console.log(this.value);
+  //     sankey = d3.sankey()
+  //       .nodeWidth(36)
+  //       .nodePadding(40)
+  //       .size([widthS, heightS])
+  //       .nodeAlign(eval(this.value));
+  //       path = sankey.links();
+  //   //  sankey.nodeAlign();
+  //     //sankey.update(graph);
+  //   //  link.attr("d", d3.sankeyLinkHorizontal());
+  //   build();
+  //   });
 
 }
