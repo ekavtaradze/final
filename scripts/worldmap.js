@@ -8,11 +8,11 @@ const scale = 300;
 const margin = {top: 0, right: 0, bottom: 0, left: 0},
     svgWidth = width - margin.left - margin.right,
     svgHeight = height - margin.top - margin.bottom;
-    
+
 const astronautColorDefault = "#FFFFFF";
 const astronautColorClicked = "#FFFF00"
 const countryColorDefault = "#000000";
-   
+
 const zoomOutLimit = 1;
 
 var mapSvg;
@@ -23,12 +23,12 @@ const gMapProjection = d3.geoCylindricalStereographic()
     .scale(scale);
 
 // Map SVG transform (changes often)
-var gTransform; 
+var gTransform;
 
 var gAstronautCities;
 var gCurrentAstronauts = [];
 
-    
+
 
 /**
  * The function which creates the worldmap from the geo.json file.
@@ -52,6 +52,7 @@ function makeWorldMap(countries, astronautCities)
     const geoPath = d3.geoPath()
         .projection(gMapProjection)
 
+
     mapSvg.selectAll('path')
         .data(countries.features)
         .enter()
@@ -63,16 +64,21 @@ function makeWorldMap(countries, astronautCities)
             .attr('fill', countryColorDefault);
 
     // This path drawing algorithm will NOT draw cities twice
+    var count =0;
+    console.log(astronautCities.features);
     mapSvg.selectAll('path')
         .data(astronautCities.features)
         .enter()
         .append('path')
             .attr('id', function(d) {return "A" + d.properties.ID})
-            .attr('d', function(d) {return geoPath(d)})
+            .attr('d', function(d) {
+              count = count+1;
+              console.log(count);
+              return geoPath(d);})
             .attr('stroke-width', 1)
             .attr('stroke', '#FFFF00')
             .attr('class', "astronautCity")
-            .attr('fill', astronautColorDefault)
+            .attr('fill', astronautColorDefault);
 
         // Zoom on map
         var mapZoom = d3.zoom()
@@ -110,7 +116,7 @@ function makeWorldMap(countries, astronautCities)
 
         // Invert the svg coordiantes to map coordinates
         let mapCoordinate = gTransform.invert([e.offsetX * scaleX, e.offsetY * scaleY]);
-        
+
         // Invert the map coordinates to feature space
         let featureCoordinate = gMapProjection.invert(mapCoordinate);
 
@@ -121,7 +127,7 @@ function makeWorldMap(countries, astronautCities)
             .attr("fill", astronautColorDefault);
 
         // Hard to change, since it's non-linear, go the current one through trying a few points
-        
+
         let searchRadius = getRadiusTransform(gTransform.k);
 
         let currentAstronauts = [];
@@ -139,7 +145,7 @@ function makeWorldMap(countries, astronautCities)
         }
 
         GetLinks(currentAstronauts);
-    });   
+    });
 }
 
 // Because d3's expects an exact coordinate and doesn't let me put in a proximity
@@ -148,8 +154,8 @@ function geoContains(featureCoordinate, coordinate, radius)
 {
     // https://stackoverflow.com/questions/481144/equation-for-testing-if-a-point-is-inside-a-circle
     // pythagorus method
-    return ((Math.pow(featureCoordinate[0] - coordinate[0], 2) 
-    + Math.pow(featureCoordinate[1] - coordinate[1], 2)) < Math.pow(radius, 2)) 
+    return ((Math.pow(featureCoordinate[0] - coordinate[0], 2)
+    + Math.pow(featureCoordinate[1] - coordinate[1], 2)) < Math.pow(radius, 2))
 }
 
 /**
