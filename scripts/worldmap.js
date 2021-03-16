@@ -107,8 +107,11 @@ function makeWorldMap(countries, astronautCities)
         d3.selectAll(".astronautCity")
             .attr("fill", astronautColorDefault);
 
-        // Needs to be tweaked, idk what to do here
-        let searchRadius = (10/(gTransform.k) + 5)/10;
+        // Hard to change, since it's non-linear, go the current one through trying a few points
+        // Zoom out max: 3
+        // Zoom in max: ~1.4
+        // k: 0.5 -> inf
+        let searchRadius = 2.4/(gTransform.k + 1) + 1.4;
 
         // Select all circles within the radius
         for (let i = 0; i < gAstronautCities.features.length; i++)
