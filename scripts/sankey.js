@@ -31,13 +31,13 @@ function makeSankey(data) {
   var defs = svgSankey.append("defs");
   defs.append("pattern")
     .attr("id", "bg")
-   .attr('patternUnits', 'userSpaceOnUse')
-   .attr('width', 860)
-   .attr('height', 400)
-   .append("svg:image")
-   .attr("xlink:href", "img/space.jpg")
-   .attr("width", 860)
-   .attr("height", 400)
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 860)
+    .attr('height', 400)
+    .append("svg:image")
+    .attr("xlink:href", "img/space.jpg")
+    .attr("width", 860)
+    .attr("height", 400)
   // .attr("x", 0)
   // .attr("y", 0)
   ;
@@ -198,7 +198,7 @@ function makeSankey(data) {
       .text(function(d) {
         return d.name;
       })
-        .attr("font-weight", 700)
+      .attr("font-weight", 700)
       .filter(function(d) {
         return d.x0 < widthS / 2;
       })
@@ -208,17 +208,17 @@ function makeSankey(data) {
       .attr("text-anchor", "start");
 
 
-      // node.append("rect")
-      //   .attr("x", function(d) {
-      //     return d.x0 + 6;
-      //   })
-      //   .attr("y", function(d) {
-      //     return (d.y1 + d.y0) / 2;
-      //   }).attr("height", function(d) {
-      //           return 5;
-      //         })
-      //         .attr("width", 10)
-      //         .style("fill", "grey");
+    // node.append("rect")
+    //   .attr("x", function(d) {
+    //     return d.x0 + 6;
+    //   })
+    //   .attr("y", function(d) {
+    //     return (d.y1 + d.y0) / 2;
+    //   }).attr("height", function(d) {
+    //           return 5;
+    //         })
+    //         .attr("width", 10)
+    //         .style("fill", "grey");
     //https://bl.ocks.org/micahstubbs/3c0cb0c0de021e0d9653032784c035e9
     // add gradient to links
     link.style('stroke', (d, i) => {
@@ -275,21 +275,19 @@ function makeSankey(data) {
           //  console.log(n);
           n.y0 = Math.max(0, Math.min(n.y0 + d.dy, heightS - (n.y1 - n.y0)));
           n.y1 = n.y0 + (n.x0 - n.x1);
-
           return n.y0;
         });
 
+        //transforming x and y together did not work - one dimensions was always wrong
       d3.select(this)
         .select("text")
         .attr("x", function(n) {
-          //console.log((n.y0 + n.y1)/2);
-          return n.x0+6;
-        })
-        .attr("y", function(n) {
-          //console.log((n.y0 + n.y1)/2);
-          return (n.y0 + n.y1)/2;
+          return n.x1 + 6;
         });
-
+      d3.select(this).select("text")
+        .attr("transform", function(n) {
+          return "translate(" + (0) + "," + ((n.y1 + n.y0) / 2) + ")";
+        });
       sankey.update(graph);
       link.attr("d", d3.sankeyLinkHorizontal());
     }
