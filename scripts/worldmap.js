@@ -37,7 +37,11 @@ var gCurrentAstronauts = [];
 */
 function makeWorldMap(countries, astronautCities)
 {
+
+
     gAstronautCities = astronautCities;
+
+
 
     mapSvg = d3.select("#map")
     .append("svg")
@@ -59,12 +63,11 @@ function makeWorldMap(countries, astronautCities)
             .attr('fill', countryColorDefault);
 
     // This path drawing algorithm will NOT draw cities twice
-    // 
     mapSvg.selectAll('path')
         .data(astronautCities.features)
         .enter()
         .append('path')
-            .attr('id', function(d) {return getID(d)})
+            .attr('id', function(d) {return "A" + d.properties.ID})
             .attr('d', function(d) {return geoPath(d)})
             .attr('stroke-width', 1)
             .attr('stroke', '#FFFF00')
@@ -100,6 +103,7 @@ function makeWorldMap(countries, astronautCities)
     // Cluster selection
     mapSvg.on("click", function(e)
     {
+        // Scale the offset by the transformed svg size
         var element = document.querySelector('#map');
         var scaleX = svgWidth / element.offsetWidth;
         var scaleY = svgHeight / element.offsetHeight;
@@ -117,9 +121,7 @@ function makeWorldMap(countries, astronautCities)
             .attr("fill", astronautColorDefault);
 
         // Hard to change, since it's non-linear, go the current one through trying a few points
-        // Zoom out max: 3
-        // Zoom in max: ~1.4
-        // k: 0.5 -> inf
+        
         let searchRadius = getRadiusTransform(gTransform.k);
 
         // Select all circles within the radius
@@ -128,12 +130,16 @@ function makeWorldMap(countries, astronautCities)
             if (geoContains(gAstronautCities.features[i].geometry.coordinates, featureCoordinate, searchRadius))
             {
                 gCurrentAstronauts.push(gAstronautCities.features[i].properties);
+
+                console.log(gAstronautCities.features[i].properties['Birth Place']);
                 
-                d3.select("#" + getID(gAstronautCities.features[i]))
+                d3.select("#" + "A" + gAstronautCities.features[i].properties.ID)
                     .attr("fill", astronautColorClicked);
             }
         }
     });
+
+    
 }
 
 // Because d3's expects an exact coordinate and doesn't let me put in a proximity
@@ -146,13 +152,15 @@ function geoContains(featureCoordinate, coordinate, radius)
     + Math.pow(featureCoordinate[1] - coordinate[1], 2)) < Math.pow(radius, 2)) 
 }
 
-function getID(d)
-{
-    return d.properties.Name.replace(/ +/g, "").replace(/\.+/g,"").replace(/\(+/g, "").replace(/\)+/g, "");
-}
-
+/**
+ * Radius transform function, Non-linear
+ * @param {} k zoom level
+ * @returns the transformed radius size
+ */
 function getRadiusTransform(k)
 {
+    // Zoom out max: 3
+    // Zoom in max: ~1.4
+    // k: 1 -> inf
     return 2.4/(k + 1) + 1.4;
 }
-
