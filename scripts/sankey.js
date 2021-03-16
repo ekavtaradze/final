@@ -2,7 +2,7 @@ function makeSankey(data) {
   console.log("Sankey Start");
 
   var windowWidth = 1500;//window.innerWidth * (0.9);
-  var windowHeight = 700;//window.innerHeight * (0.7);
+  var windowHeight = 500;//window.innerHeight * (0.7);
   var marginS = {
       top: 10,
       right: 250,
@@ -45,7 +45,8 @@ function makeSankey(data) {
   var sankey = d3.sankey()
     .nodeWidth(36)
     .nodePadding(40)
-    .size([widthS, heightS]);
+    .size([widthS, heightS])
+    .nodeAlign(d3.sankeyRight);
   //.align('justify');
   //  .align('justify');
 
@@ -104,7 +105,7 @@ function makeSankey(data) {
     build();
   }
 
-
+sankey.nodeAlign(d3.sankeyLeft)
   //});
   function build() {
 
@@ -133,16 +134,6 @@ function makeSankey(data) {
         return d.width + 5;
       });
 
-    //  svgSankey.nodeAlign(d3.sankeyLeft);
-    //   .attr("stroke", d => edgeColor === "none" ? "#aaa"
-    // : edgeColor === "path" ? d.uid
-    // : edgeColor === "input" ? color(d.source)
-    // : color(d.target));
-    //.attr("stroke", "blue");
-    // .style("stroke-dasharray", ("3,3"))
-    //   .attr("stroke",'url(#bg)');
-    //  function(d) { return d.color; });
-    //  .attr();
 
     // add the link titles
     link.append("title")
@@ -155,7 +146,20 @@ function makeSankey(data) {
     var node = svgSankey.append("g").selectAll(".node")
       .data(graph.nodes)
       .enter().append("g")
-      .attr("class", "node");
+      .attr("class", "node")
+      .call(
+         d3
+           .drag()
+           .subject(function(d) {
+             return d;
+           })
+           .on("start", function() {
+             this.parentNode.appendChild(this);
+           })
+           .on("drag", dragmove)
+       );
+      // .call(d3.drag())
+      //   .on("drag", dragmove);
 
     // add the rectangles for the nodes
     node.append("rect")
@@ -244,11 +248,26 @@ function makeSankey(data) {
 
     // the function for moving the nodes
     function dragmove(d) {
-      d3.select(this).attr('transform',
-        `translate(${d.x = Math.max(0, Math.min(width - d.dx, d3.event.x))},${d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))})`);
-      sankey.relayout();
-      link.attr('d', path);
-    };
+      d3.select(this)
+        .select("rect")
+        .attr("y", function(n) {
+        //  console.log(n);
+          n.y0 = Math.max(0, Math.min(n.y0 + d.dy, heightS - (n.y1 - n.y0)));
+          n.y1 = n.y0 + Math.abs(n.x0-n.x1);
+
+          return n.y0;
+        });
+
+      d3.select(this)
+        .select("text")
+        .attr("y", function(n) {
+          return (n.y0 + n.y1) / 2;
+        });
+
+      sankey.update(graph);
+      link.attr("d", d3.sankeyLinkHorizontal());
+    }
+
 
 
   }

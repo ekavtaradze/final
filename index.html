@@ -23,7 +23,7 @@
       .link {
         fill: none;
         /* stroke: darkblue; */
-        stroke-opacity: .5;
+        stroke-opacity: .3;
       }
 
       .link:hover {
@@ -48,7 +48,7 @@
         // Load sankey
     ]).then( ([countries, astronautCities, sankeydata]) =>
     {
-        makeWorldMap(countries, astronautCities);
+        //makeWorldMap(countries, astronautCities);
         makeSankey(sankeydata);
         // Should run sankey...
     });
