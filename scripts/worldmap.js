@@ -1,11 +1,13 @@
 
-    // Constants
-const width = 1000;
-const height = 500;
-const scale = 200;
-const margin = {top: 10, right: 5, bottom: 15, left: 20}
-const svgWidth = width - margin.left - margin.right
-const svgHeight = height - margin.top - margin.bottom;
+// Constants
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight * (0.6);
+var width = windowWidth;
+var height = windowHeight;
+const scale = 300;
+const margin = {top: 0, right: 0, bottom: 0, left: 0},
+    svgWidth = width - margin.left - margin.right,
+    svgHeight = height - margin.top - margin.bottom;
     
 const astronautColorDefault = "#FFFFFF";
 const astronautColorClicked = "#FFFF00"
@@ -39,8 +41,9 @@ function makeWorldMap(countries, astronautCities)
 
     mapSvg = d3.select("#map")
     .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight);
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 "+ svgWidth +" "+ svgHeight +"")
+        .classed("svg-content-responsive", true)
 
     const geoPath = d3.geoPath()
         .projection(gMapProjection)
