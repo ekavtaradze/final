@@ -197,6 +197,7 @@ function makeSankey(data) {
 
     //https://bl.ocks.org/micahstubbs/3c0cb0c0de021e0d9653032784c035e9
     // add gradient to links
+
     link.style('stroke', (d, i) => {
       const gradientID = `gradient${i}`;
 
@@ -229,8 +230,12 @@ function makeSankey(data) {
       return `url(#${gradientID})`;
     });
 
-    //https://gist.github.com/mobidots/f86a31ce14a3227affd1c1287794d1a6
-    // the function for moving the nodes
+    function highlight(source, target){
+      var highlighted = link.filter(d =>d.source.name === source && d.target.name === target);
+      highlighted.style('stroke', 'grey');
+    };
+
+
     function dragmove(d) {
       d3.select(this)
         .select("rect")
