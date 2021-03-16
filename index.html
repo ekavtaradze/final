@@ -31,16 +31,30 @@
       }
 
 
-      #map{
+      .map{
         background-color: lightsteelblue;
+        position: absolute;
+        
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
+
+      .sankey
+      {
+        position: absolute;
+        
+        left: 50%;
+        bottom: 0;
+        transform: translate(-50%, -50%);
+      }
+
 
     </style>
 </head>
 
 <body>
-    <div id = 'map'> </div>
-    <div id="my_dataviz">
+    <div id='map' class='map'> </div>
+    <div id="my_dataviz" class='sankey'>
 </div>
     <script>
     Promise.all([
