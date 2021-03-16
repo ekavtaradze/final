@@ -100,8 +100,12 @@ function makeWorldMap(countries, astronautCities)
     // Cluster selection
     mapSvg.on("click", function(e)
     {
+        var element = document.querySelector('#map');
+        var scaleX = svgWidth / element.offsetWidth;
+        var scaleY = svgHeight / element.offsetHeight;
+
         // Invert the svg coordiantes to map coordinates
-        let mapCoordinate = gTransform.invert([e.offsetX, e.offsetY]);
+        let mapCoordinate = gTransform.invert([e.offsetX * scaleX, e.offsetY * scaleY]);
         
         // Invert the map coordinates to feature space
         let featureCoordinate = gMapProjection.invert(mapCoordinate);
@@ -144,7 +148,7 @@ function geoContains(featureCoordinate, coordinate, radius)
 
 function getID(d)
 {
-    return d.properties.Name.replace(/ +/g, "").replace(/\.+/g,"");
+    return d.properties.Name.replace(/ +/g, "").replace(/\.+/g,"").replace(/\(+/g, "").replace(/\)+/g, "");
 }
 
 function getRadiusTransform(k)
