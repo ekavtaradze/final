@@ -120,11 +120,11 @@ function makeSankey(data) {
         'Management', 'Space Flight', 'Retired'
       ])
       .range([
-        '#90eb9d', '#f9d057', '#f29e2e',
-        '#007AA5', '#00308f', '#4b5320',
-        '#cc4040', '#a77C29', '#000048',
-        '', 'yellow', '#451208',
-        'grey', 'brown', 'teal'
+        '#90eb9d', '#f9d057', '#cc4040',
+        '#B86125', '#003087', '#4b5320',
+        '#f29e2e', '#a77C29', '#000048',
+        '#00b0ff', 'green', 'red',
+        '#f2952e', '#FF4F00', 'grey'
       ]);
 
     var link = links.selectAll(".link")
@@ -176,7 +176,10 @@ function makeSankey(data) {
       })
       .attr("width", sankey.nodeWidth())
       .style("fill", function(d) {
-        return d.color = color(d.name.replace(/ .*/, ""));
+        // console.log("fill");
+        // console.log(d.name);
+        // console.log(color(d.name));
+        return d.color = color(d.name);
       })
       //.attr("fill", "url(#bg)")
       .style("stroke", function(d) {
@@ -225,15 +228,17 @@ function makeSankey(data) {
     // add gradient to links
     link.style('stroke', (d, i) => {
       //console.log('d from gradient stroke func', d);
-
+      //console.log(d);
+      //console.log(i);
       // make unique gradient ids
       const gradientID = `gradient${i}`;
 
       const startColor = d.source.color;
       const stopColor = d.target.color;
 
-      //  console.log('startColor', startColor);
-      //  console.log('stopColor', stopColor);
+      //console.log(gradientID);
+       // console.log('startColor', startColor);
+       // console.log('stopColor', stopColor);
 
       const linearGradient = defs.append('linearGradient')
         .attr('id', gradientID);
@@ -250,11 +255,11 @@ function makeSankey(data) {
         ])
         .enter().append('stop')
         .attr('offset', d => {
-          //console.log('d.offset', d.offset);
+          // console.log('d.offset', d.offset);
           return d.offset;
         })
         .attr('stop-color', d => {
-          //  console.log('d.color', d.color);
+          // console.log('d.color', d.color);
           return d.color;
         });
 
@@ -281,14 +286,36 @@ function makeSankey(data) {
         });
 
 
+      function value_limit(val, min, max) {
+        return val < min ? min : (val > max ? max : val);
+      };
+
       d3.select(this)
-        .select("text")
-        .attr("x", function(n) {
-          return n.x1 + 6;
-        })
-        .attr("y", function(n) {
-          return ((n.y1 + n.y0) / 2);
-        });
+      .select("text")
+      .attr("x", function(n) {
+        return n.x0 - 6;
+      })
+      .attr("y", function(n) {
+      //   console.log("y");
+      //   console.log(n.y0);
+      //   console.log(((n.y1 + n.y0) / 2));
+      // console.log(n.y0 - (Math.abs(n.y0-n.y1)/2));
+      // console.log(n.y1);
+        return n.y0;//value_limit(((n.y1 + n.y0) / 2), n.y1, n.y0);
+      })
+      .attr("dy", "0.35em")
+      .attr("text-anchor", "end")
+      .text(function(n) {
+        return n.name;
+      })
+      .attr("font-weight", 700)
+      .filter(function(n) {
+        return n.x0 < widthS / 2;
+      })
+      .attr("x", function(n) {
+        return n.x1 + 6;
+      })
+      .attr("text-anchor", "start");
       // d3.select(this).select("text")
       //   .attr("transform", function(n) {
       //     return "translate(" + (0) + "," + ((n.y1 + n.y0) / 2) + ")";
