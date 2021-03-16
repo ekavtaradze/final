@@ -271,13 +271,6 @@ function makeSankey(data) {
     function dragmove(d) {
       d3.select(this)
         .select("rect")
-        .attr("x", function(n) {
-          //  console.log(n);
-          n.x0 = Math.max(0, Math.min(n.x0 + d.dx, widthS - (n.x1 - n.x0)));
-          n.x1 = n.x0 + sankey.nodeWidth();
-
-          return n.x0;
-        })
         .attr("y", function(n) {
           //  console.log(n);
           n.y0 = Math.max(0, Math.min(n.y0 + d.dy, heightS - (n.y1 - n.y0)));
@@ -286,40 +279,12 @@ function makeSankey(data) {
         });
 
 
-      function value_limit(val, min, max) {
-        return val < min ? min : (val > max ? max : val);
-      };
-
       d3.select(this)
       .select("text")
-      .attr("x", function(n) {
-        return n.x0 - 6;
-      })
       .attr("y", function(n) {
-      //   console.log("y");
-      //   console.log(n.y0);
-      //   console.log(((n.y1 + n.y0) / 2));
-      // console.log(n.y0 - (Math.abs(n.y0-n.y1)/2));
-      // console.log(n.y1);
         return n.y0;//value_limit(((n.y1 + n.y0) / 2), n.y1, n.y0);
-      })
-      .attr("dy", "0.35em")
-      .attr("text-anchor", "end")
-      .text(function(n) {
-        return n.name;
-      })
-      .attr("font-weight", 700)
-      .filter(function(n) {
-        return n.x0 < widthS / 2;
-      })
-      .attr("x", function(n) {
-        return n.x1 + 6;
-      })
-      .attr("text-anchor", "start");
-      // d3.select(this).select("text")
-      //   .attr("transform", function(n) {
-      //     return "translate(" + (0) + "," + ((n.y1 + n.y0) / 2) + ")";
-      //   });
+      });
+
       sankey.update(graph);
       link.attr("d", d3.sankeyLinkHorizontal());
     }
