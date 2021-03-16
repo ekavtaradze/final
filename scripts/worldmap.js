@@ -1,28 +1,32 @@
 
     // Constants
-    const width = 500;
-    const height = 300;
-    const scale = 200;
-    const margin = {top: 10, right: 5, bottom: 15, left: 20},
-        svgWidth = width - margin.left - margin.right,
-        svgHeight = height - margin.top - margin.bottom;
-  
-    const countryColorDefault = "#000000";
-    const countryColorClicked = "FFFF00";
+const width = 1000;
+const height = 500;
+const scale = 200;
+const margin = {top: 10, right: 5, bottom: 15, left: 20}
+const svgWidth = width - margin.left - margin.right
+const svgHeight = height - margin.top - margin.bottom;
     
-    const astronautColorDefault = "#FFFFFF";
-    const astronautColorClicked = "#FFFF00"
+const astronautColorDefault = "#FFFFFF";
+const astronautColorClicked = "#FFFF00"
+const countryColorDefault = "#000000";
    
+const zoomOutLimit = 1;
 
-    const zoomOutLimit = 0.5;
+var mapSvg;
 
-    var mapSvg;
+// Map projection transform
+const gMapProjection = d3.geoCylindricalStereographic()
+    .translate([150, 200])
+    .scale(scale);
 
-    var gTransform; 
+// Map SVG transform (changes often)
+var gTransform; 
 
-    var gAstronautCities;
+var gAstronautCities;
+var gCurrentAstronauts = [];
 
-    var gCurrentAstronauts = [];
+    
 
 /**
  * The function which creates the worldmap from the geo.json file.
@@ -38,11 +42,8 @@ function makeWorldMap(countries, astronautCities)
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
-    const projection = d3.geoCylindricalStereographic()
-        .scale(scale)
-
     const geoPath = d3.geoPath()
-        .projection(projection)
+        .projection(gMapProjection)
 
     mapSvg.selectAll('path')
         .data(countries.features)
@@ -54,11 +55,13 @@ function makeWorldMap(countries, astronautCities)
             .attr('stroke', '#FFFFFF')
             .attr('fill', countryColorDefault);
 
+    // This path drawing algorithm will NOT draw cities twice
+    // 
     mapSvg.selectAll('path')
         .data(astronautCities.features)
         .enter()
         .append('path')
-            .attr('id', function(d) {return getBDID(d.properties['Birth Date'])})
+            .attr('id', function(d) {return getID(d)})
             .attr('d', function(d) {return geoPath(d)})
             .attr('stroke-width', 1)
             .attr('stroke', '#FFFF00')
@@ -98,8 +101,7 @@ function makeWorldMap(countries, astronautCities)
         let mapCoordinate = gTransform.invert([e.offsetX, e.offsetY]);
         
         // Invert the map coordinates to feature space
-        let featureCoordinate = d3.geoCylindricalStereographic()
-            .scale(scale).invert(mapCoordinate);
+        let featureCoordinate = gMapProjection.invert(mapCoordinate);
 
         // erase previous selection
         gCurrentAstronauts = [];
@@ -107,8 +109,11 @@ function makeWorldMap(countries, astronautCities)
         d3.selectAll(".astronautCity")
             .attr("fill", astronautColorDefault);
 
-        // Needs to be tweaked, idk what to do here
-        let searchRadius = (10/(gTransform.k) + 5)/10;
+        // Hard to change, since it's non-linear, go the current one through trying a few points
+        // Zoom out max: 3
+        // Zoom in max: ~1.4
+        // k: 0.5 -> inf
+        let searchRadius = getRadiusTransform(gTransform.k);
 
         // Select all circles within the radius
         for (let i = 0; i < gAstronautCities.features.length; i++)
@@ -117,7 +122,7 @@ function makeWorldMap(countries, astronautCities)
             {
                 gCurrentAstronauts.push(gAstronautCities.features[i].properties);
                 
-                d3.select("#" + getBDID(gAstronautCities.features[i].properties['Birth Date']))
+                d3.select("#" + getID(gAstronautCities.features[i]))
                     .attr("fill", astronautColorClicked);
             }
         }
@@ -134,8 +139,13 @@ function geoContains(featureCoordinate, coordinate, radius)
     + Math.pow(featureCoordinate[1] - coordinate[1], 2)) < Math.pow(radius, 2)) 
 }
 
-function getBDID(birthDay)
+function getID(d)
 {
-    return "BD" + birthDay.split("/").join("");
+    return d.properties.Name.replace(/ +/g, "").replace(/\.+/g,"");
+}
+
+function getRadiusTransform(k)
+{
+    return 2.4/(k + 1) + 1.4;
 }
 
