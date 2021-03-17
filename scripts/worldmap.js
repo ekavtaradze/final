@@ -10,10 +10,12 @@ const margin = {top: 0, right: 0, bottom: 0, left: 0},
     svgHeight = height - margin.top - margin.bottom;
 
 const astronautColorDefault = "#FFFFFF";
-const astronautColorClicked = "#FFFF00"
+const astronautColorOutline = "#34a8eb"
+const astronautColorClicked = "#a700cc"
 const countryColorDefault = "#000000";
 
 const zoomOutLimit = 1;
+const zoomInLimit = 18;
 
 var mapSvg;
 
@@ -24,6 +26,7 @@ const gMapProjection = d3.geoCylindricalStereographic()
 
 // Map SVG transform (changes often)
 var gTransform;
+var zoomTransform = {x: 0, y: 0};
 
 var gAstronautCities;
 var gCurrentAstronauts = [];
@@ -75,9 +78,10 @@ function makeWorldMap(countries, astronautCities)
             .attr('cy', () => {return coordinates[1]})
             .attr('r', 5)
             .attr('stroke-width', 1)
-            .attr('stroke', '#FFFF00')
+            .attr('stroke', astronautColorOutline)
             .attr('class', "astronautCity")
             .attr('fill', astronautColorDefault)
+            .attr('opacity', 0.8)
             .on('mouseover', () => 
             {
                 let cx = parseFloat(d3.select('#' + "A" + astronautCities.features[i].properties.ID).attr("cx"));
@@ -147,15 +151,28 @@ function makeWorldMap(countries, astronautCities)
     function zoomed(e)
     {
         //console.log(e.transform.k);
-        if (e.transform.k >= zoomOutLimit)
-        {
-            mapSvg.selectAll('*').attr('transform', e.transform);
-            gTransform = e.transform;
-        }
-        else
-        {
+        console.log(zoomTransform.x)
+        if (e.transform.k < zoomOutLimit) {
             e.transform.k = zoomOutLimit;
+            e.transform.x = zoomTransform.x;
+            e.transform.y = zoomTransform.y;
         }
+        
+        else if (e.transform.k > zoomInLimit) {
+            e.transform.k = zoomInLimit;
+            e.transform.x = zoomTransform.x;
+            e.transform.y = zoomTransform.y;
+        }
+        else{
+            mapSvg.selectAll('*').attr('transform', e.transform);
+
+            mapSvg.selectAll('circle').attr('transform', (e.transform))
+                .attr('r', 5/(e.transform.k / 2))
+                .attr('stroke-width', 1/(e.transform.k / 2));
+        }
+        zoomTransform.x = e.transform.x;
+        zoomTransform.y = e.transform.y;
+        gTransform = e.transform;
     }
 
     // Cluster selection
@@ -176,7 +193,8 @@ function makeWorldMap(countries, astronautCities)
         gCurrentAstronauts = [];
 
         d3.selectAll(".astronautCity")
-            .attr("fill", astronautColorDefault);
+            .attr("fill", astronautColorDefault)
+            .attr('stroke', astronautColorOutline);
 
         // Hard to change, since it's non-linear, go the current one through trying a few points
 
@@ -192,7 +210,8 @@ function makeWorldMap(countries, astronautCities)
                 currentAstronauts.push(gAstronautCities.features[i].properties);
 
                 d3.select("#" + "A" + gAstronautCities.features[i].properties.ID)
-                    .attr("fill", astronautColorClicked);
+                    .attr("fill", astronautColorClicked)
+                    .attr('stroke', astronautColorClicked);
             }
         }
 
