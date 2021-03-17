@@ -9,11 +9,8 @@
 
 ## Working datasets:
 
-https://aerospace.csis.org/data/international-astronaut-database/ <br>
-https://www.kaggle.com/agirlcoding/all-space-missions-from-1957 <br>
 https://www.kaggle.com/nasa/astronaut-yearbook <br>
-https://www.kaggle.com/nasa/astronaut-yearbook
-
+Geo JSON files
 
 ## Idea Brainstorming Stage 
 
@@ -116,6 +113,7 @@ As mentioned previously, our data set contained information of the astronauts an
 major, army background...). Not all of the information was particularly important when constructing our Sankey diagram. So we simply removed the 
 information that would not be represented in the Sankey diagram. 
 
+We extracted the locations of the birth cities via Excel. We applied the Geography data cast to the column with birth city names. Then, extracted the latitudes and longtitudes.
 As for the map, one challenge that our group saw is that multiple astronauts were listed as being born in the same city. This
 presented a challenge for us because if each point being projected on the map was a single astronaut, certain points would overlap.
 So, we introduced a point offset for when describing the latitude and longitude if a particular city was the birthplace multiple astronauts.
@@ -126,7 +124,7 @@ In an .xsls file our group manipulated the lat and long values of a city by just
 - Inspired by the prof suggestion of XKCD LOTR diagram: https://xkcd.com/657/
 - Interactive maps covered in class by Professor Harrison
 
-### Issued Faced when Choosing Visual Encoding Strategy
+### Issues Faced when Choosing Visual Encoding Strategy
 One of the main challenges we faced while undertaking this task was finding a data set that properly incorporated all the
 information our group wanted to present on the screen. As mentioned previously, our group changed the original viz scheme
 in light of the struggles faced when joining multiple data sets. 
