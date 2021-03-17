@@ -114,7 +114,9 @@ Almost all the astronauts were from the United States. Taking a deeper dive, we 
 - When you select multiple astronauts on the map it is not currently possible to separate them on the Sankey diagram.
 
 ### Resources Used:
-- Sankey - https://bl.ocks.org/d3noob/d0212d9bdc0ad3d3e45b40d6d012e455
+- d3 Sankey - https://github.com/d3/d3-sankey
+
+- Sankey Tutorial - https://bl.ocks.org/d3noob/d0212d9bdc0ad3d3e45b40d6d012e455
 
 - Gradient links: https://bl.ocks.org/micahstubbs/3c0cb0c0de021e0d9653032784c035e9
 
