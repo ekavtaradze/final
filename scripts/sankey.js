@@ -4,7 +4,7 @@ var link;
 function makeSankey(data) {
   console.log("Sankey Start");
 
-  var windowWidth = window.innerWidth * (0.9);
+  var windowWidth = window.innerWidth;
   var windowHeight = window.innerHeight * (0.5);
   var marginS = {
       top: 10,

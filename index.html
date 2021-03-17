@@ -54,24 +54,15 @@
 <body>
     <div id='map' class='map'> </div>
     <div id="my_dataviz" class='sankey'>
-      <!-- <div align="center">
-        <b>Layout alignment: </b>
-        <input class="sankey-align" type="radio" name="sankey-align" value="d3.sankeyLeft"> Left &nbsp;
-        <input class="sankey-align" type="radio" name="sankey-align" value="d3.sankeyCenter"> Center &nbsp;
-        <input class="sankey-align" type="radio" name="sankey-align" value="d3.sankeyRight"> Right &nbsp;
-        <input class="sankey-align" type="radio" name="sankey-align" value="d3.sankeyJustify" checked="checked"> Justify &nbsp;
-      </div> -->
 </div>
     <script>
     Promise.all([
       d3.json("data/worldmap.geo.json"),
       d3.json("data/Astronaut Cities.geo.json"),
       d3.csv("data/sankeyCompleteNoZero.csv")
-      // Load sankey
     ]).then(([countries, astronautCities, sankeydata]) => {
       makeWorldMap(countries, astronautCities);
       makeSankey(sankeydata);
-      // Should run sankey...
     });
   </script>
 
