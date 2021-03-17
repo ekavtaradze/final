@@ -68,13 +68,63 @@ function makeWorldMap(countries, astronautCities)
     // So doing it this way
     for (let i in astronautCities.features)
     {
-        mapSvg.append('path')
+        let coordinates = gMapProjection([astronautCities.features[i].geometry.coordinates[0], astronautCities.features[i].geometry.coordinates[1]]);
+        mapSvg.append('circle')
             .attr('id', () => {return "A" + astronautCities.features[i].properties.ID})
-            .attr('d', () => {return geoPath(astronautCities.features[i]);})
+            .attr('cx', () => {return coordinates[0]})
+            .attr('cy', () => {return coordinates[1]})
+            .attr('r', 5)
             .attr('stroke-width', 1)
             .attr('stroke', '#FFFF00')
             .attr('class', "astronautCity")
-            .attr('fill', astronautColorDefault);
+            .attr('fill', astronautColorDefault)
+            .on('mouseover', () => 
+            {
+                let cx = parseFloat(d3.select('#' + "A" + astronautCities.features[i].properties.ID).attr("cx"));
+                let cy = parseFloat(d3.select('#' + "A" + astronautCities.features[i].properties.ID).attr("cy"));
+                let dx = (cx + (100/(gTransform.k * 2)));
+                let dy = (cy + (100/(gTransform.k * 2)));
+                let textSize = Math.floor(30/(gTransform.k * 2)).toString();
+
+                // Get rid of previous annotation
+                mapSvg.selectAll("#annotation").remove();
+                
+                // line to text
+                mapSvg.append('line')
+                    .attr('id', 'annotation')
+                    .attr('x1', cx)
+                    .attr('y1', cy)
+                    .attr('x2', dx)
+                    .attr('y2', dy)
+                    .attr('stroke-width', 1)
+                    .attr('stroke', '#FFFFFF')
+                
+                // box for annotation 
+                mapSvg.append('rect')
+                    .attr('id', 'annotation')
+                    .attr('x', dx)
+                    .attr('y', dy)
+                    .attr('width', 420)
+                    .attr('height', 20)
+                    .attr('fill', '#FFFFFF')
+                    .text(astronautCities.features[i].properties.Name)
+
+                // text
+                mapSvg.append('text')
+                    .attr('id', 'annotation')
+                    .attr('x', dx)
+                    .attr('y', dy + 15)
+                    .attr('font', 'bold ' + textSize + 'px monospace')
+                    .attr('fill', '#000000')
+                    .text(astronautCities.features[i].properties.Name + ", " +
+                        "Born in: " + astronautCities.features[i].properties["Birth Place"]
+                    );
+
+                
+
+                let e = {transform: gTransform}
+                zoomed(e);
+            });
     }
 
     // Zoom on map
@@ -86,15 +136,14 @@ function makeWorldMap(countries, astronautCities)
         .scale(zoomOutLimit);
 
     mapSvg.call(mapZoom)
-        .call(mapZoom.transform, zoomSettings)
+        .call(mapZoom.transform, zoomSettings);
 
     function zoomed(e)
     {
         //console.log(e.transform.k);
         if (e.transform.k >= zoomOutLimit)
         {
-            mapSvg.selectAll('path').attr('transform', e.transform);
-            mapSvg.selectAll('circle').attr('transform', e.transform);
+            mapSvg.selectAll('*').attr('transform', e.transform);
             gTransform = e.transform;
         }
         else
