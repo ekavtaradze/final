@@ -84,7 +84,13 @@ function makeWorldMap(countries, astronautCities)
                 let cy = parseFloat(d3.select('#' + "A" + astronautCities.features[i].properties.ID).attr("cy"));
                 let dx = (cx + (100/(gTransform.k * 2)));
                 let dy = (cy + (100/(gTransform.k * 2)));
-                let textSize = Math.floor(30/(gTransform.k * 2)).toString();
+
+                let rwx = 600/(gTransform.k);
+                let rhx = 40/gTransform.k;
+                
+                let tdx = 2/(gTransform.k);
+                let tdy = 15/(gTransform.k / 2);
+                let textSize = Math.floor(10/(gTransform.k / 2)).toString();
 
                 // Get rid of previous annotation
                 mapSvg.selectAll("#annotation").remove();
@@ -104,18 +110,18 @@ function makeWorldMap(countries, astronautCities)
                     .attr('id', 'annotation')
                     .attr('x', dx)
                     .attr('y', dy)
-                    .attr('width', 420)
-                    .attr('height', 20)
+                    .attr('width', rwx)
+                    .attr('height', rhx)
                     .attr('fill', '#FFFFFF')
                     .text(astronautCities.features[i].properties.Name)
 
                 // text
                 mapSvg.append('text')
                     .attr('id', 'annotation')
-                    .attr('x', dx)
-                    .attr('y', dy + 15)
-                    .attr('font', 'bold ' + textSize + 'px monospace')
-                    .attr('fill', '#000000')
+                    .attr('x', dx + tdx)
+                    .attr('y', dy + tdy)
+                    .style('font', 'bold ' + textSize +'px sans-serif')
+                    .style('fill', '#000000')
                     .text(astronautCities.features[i].properties.Name + ", " +
                         "Born in: " + astronautCities.features[i].properties["Birth Place"]
                     );
