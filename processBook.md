@@ -3,7 +3,9 @@
 ## Link to initial proposal: <br>https://docs.google.com/document/d/1ox2JzEldCwTgkCKxna-jLT34oJwoHd9bM_2vRIvY-AY/edit?usp=sharing
 
 
-## Github repo: https://github.com/ekavtaradze/final/tree/main
+## Github Pages:  https://ekavtaradze.github.io/final/
+
+### Github repo: https://github.com/ekavtaradze/final/tree/main
 
 
 
