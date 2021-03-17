@@ -68,18 +68,19 @@
 
     .block{
       display: inline-block;
+      position: absolute;
     }
   </style>
 </head>
 
 <body>
 <div class="block">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="viz.html">Viz</a></li>
-  </ul>
-</div>
-<div class="block">
+  <div class="block">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="viz.html">Viz</a></li>
+    </ul>
+  </div>
   <div id='map' class='map'> </div>
   <div id="my_dataviz" class='sankey'> </div>
 </div>
