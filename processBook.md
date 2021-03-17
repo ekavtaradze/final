@@ -10,7 +10,7 @@
 ## Working datasets:
 
 https://www.kaggle.com/nasa/astronaut-yearbook <br>
-Geo JSON files
+https://exploratory.io/map
 
 ## Idea Brainstorming Stage
 
@@ -161,3 +161,9 @@ So, we decided to remove those from the Sankey diagram.
 - Sankey - https://bl.ocks.org/d3noob/d0212d9bdc0ad3d3e45b40d6d012e455
 
 - Gradient links: https://bl.ocks.org/micahstubbs/3c0cb0c0de021e0d9653032784c035e9
+
+- Astronauts Dataset: https://www.kaggle.com/nasa/astronaut-yearbook
+
+- World Geo JSON: https://exploratory.io/map
+
+- CSV(lat,long) to Geo JSON: https://geojson.io/#map=2/20.0/0.0
