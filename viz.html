@@ -45,43 +45,44 @@
       margin: auto;
       width: 80%;
     }
-
     ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #333;
-    }
-
-    li {
-      float: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100px;
+    background-color: #f1f1f1;
     }
 
     li a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
     }
 
+    /* Change the link color on hover */
     li a:hover {
-      background-color: #111;
+    background-color: #555;
+    color: white;
+    }
+
+    .block{
+      display: inline-block;
     }
   </style>
 </head>
 
 <body>
-  <div>
+<div class="block">
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="viz.html">Viz</a></li>
   </ul>
 </div>
+<div class="block">
   <div id='map' class='map'> </div>
-  <div id="my_dataviz" class='sankey'>
-
+  <div id="my_dataviz" class='sankey'> </div>
+</div>
     <script>
       Promise.all([
         d3.json("data/worldmap.geo.json"),

@@ -31,14 +31,14 @@ function makeSankey(data) {
 
   var defs = svgSankey.append("defs");
   defs.append("pattern")
-    .attr("id", "bg")
-    .attr('patternUnits', 'userSpaceOnUse')
-    .attr('width', 860)
-    .attr('height', 400)
-    .append("svg:image")
-    .attr("xlink:href", "img/space.jpg")
-    .attr("width", 860)
-    .attr("height", 400);
+    .attr("id", "bg");
+    // .attr('patternUnits', 'userSpaceOnUse')
+    // .attr('width', 860)
+    // .attr('height', 400)
+    // .append("svg:image")
+    // .attr("xlink:href", "img/space.jpg")
+    // .attr("width", 860)
+    // .attr("height", 400);
 
 
   var sankey = d3.sankey()
@@ -112,8 +112,8 @@ function makeSankey(data) {
         '#90eb9d', '#f9d057', '#cc4040',
         '#B86125', '#003087', '#4b5320',
         '#f29e2e', '#a77C29', '#000048',
-        '#00b0ff', 'green', 'red',
-        '#f2952e', '#FF4F00', 'grey'
+        '#377bfb', 'green', '#8b0000',
+        '#f2952e', '#F04A00', 'grey'
       ]);
 
     link = links.selectAll(".link")
@@ -258,7 +258,7 @@ function highlight(source, target) {
   console.log(source)
   console.log(target)
   var highlighted = link.filter(d => d.source.name === source && d.target.name === target);
-  highlighted.style('stroke-opacity', 1);
+  highlighted.style('stroke-opacity', 0.8);
 };
 
 function unHighlight() {
