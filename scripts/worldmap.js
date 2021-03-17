@@ -64,47 +64,44 @@ function makeWorldMap(countries, astronautCities)
             .attr('fill', countryColorDefault);
 
     // This path drawing algorithm will NOT draw cities twice
-    var count =0;
-    console.log(astronautCities.features);
-    mapSvg.selectAll('path')
-        .data(astronautCities.features)
-        .enter()
-        .append('path')
-            .attr('id', function(d) {return "A" + d.properties.ID})
-            .attr('d', function(d) {
-              count = count+1;
-              console.log(count);
-              return geoPath(d);})
+    // It will also just not draw some cities, which is bs
+    // So doing it this way
+    for (let i in astronautCities.features)
+    {
+        mapSvg.append('path')
+            .attr('id', () => {return "A" + astronautCities.features[i].properties.ID})
+            .attr('d', () => {return geoPath(astronautCities.features[i]);})
             .attr('stroke-width', 1)
             .attr('stroke', '#FFFF00')
             .attr('class', "astronautCity")
             .attr('fill', astronautColorDefault);
+    }
 
-        // Zoom on map
-        var mapZoom = d3.zoom()
-            .on('zoom', zoomed);
+    // Zoom on map
+    var mapZoom = d3.zoom()
+        .on('zoom', zoomed);
 
-        var zoomSettings = d3.zoomIdentity
-            .translate(width/3, height/2)
-            .scale(zoomOutLimit);
+    var zoomSettings = d3.zoomIdentity
+        .translate(width/3, height/2)
+        .scale(zoomOutLimit);
 
-        mapSvg.call(mapZoom)
-            .call(mapZoom.transform, zoomSettings)
+    mapSvg.call(mapZoom)
+        .call(mapZoom.transform, zoomSettings)
 
-        function zoomed(e)
-            {
-                //console.log(e.transform.k);
-                if (e.transform.k >= zoomOutLimit)
-                {
-                    mapSvg.selectAll('path').attr('transform', e.transform);
-                    mapSvg.selectAll('circle').attr('transform', e.transform);
-                    gTransform = e.transform;
-                }
-                else
-                {
-                    e.transform.k = zoomOutLimit;
-                }
-            }
+    function zoomed(e)
+    {
+        //console.log(e.transform.k);
+        if (e.transform.k >= zoomOutLimit)
+        {
+            mapSvg.selectAll('path').attr('transform', e.transform);
+            mapSvg.selectAll('circle').attr('transform', e.transform);
+            gTransform = e.transform;
+        }
+        else
+        {
+            e.transform.k = zoomOutLimit;
+        }
+    }
 
     // Cluster selection
     mapSvg.on("click", function(e)
