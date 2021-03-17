@@ -1,4 +1,3 @@
-
 var link;
 
 function makeSankey(data) {
@@ -21,9 +20,8 @@ function makeSankey(data) {
     };
 
 
-  var color = d3.scaleOrdinal(d3.schemeCategory10);
+  //  var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  // append the svg object to the body of the page
   var svgSankey = d3.select("#my_dataviz").append("svg")
     .attr("width", widthS + marginS.left + marginS.right)
     .attr("height", heightS + marginS.top + marginS.bottom)
@@ -135,7 +133,7 @@ function makeSankey(data) {
           d.target.name + "\n" + format(d.value);
       });
 
-    // add in the nodes
+
     var node = nodes.selectAll(".node")
       .data(graph.nodes)
       .enter().append("g")
@@ -152,7 +150,6 @@ function makeSankey(data) {
         .on("drag", dragmove)
       );
 
-    // add the rectangles for the nodes
     node.append("rect")
       .attr("x", function(d) {
         return d.x0;
@@ -200,7 +197,6 @@ function makeSankey(data) {
 
     //https://bl.ocks.org/micahstubbs/3c0cb0c0de021e0d9653032784c035e9
     // add gradient to links
-
     link.style('stroke', (d, i) => {
       const gradientID = `gradient${i}`;
 
@@ -244,10 +240,10 @@ function makeSankey(data) {
         });
 
       d3.select(this)
-      .select("text")
-      .attr("y", function(n) {
-        return n.y0;//value_limit(((n.y1 + n.y0) / 2), n.y1, n.y0);
-      });
+        .select("text")
+        .attr("y", function(n) {
+          return n.y0; //value_limit(((n.y1 + n.y0) / 2), n.y1, n.y0);
+        });
 
       sankey.update(graph);
       link.attr("d", d3.sankeyLinkHorizontal());
@@ -256,30 +252,15 @@ function makeSankey(data) {
   }
 
 
-  // // Radio button change
-  //   d3.selectAll('.sankey-align').on('change', function() {
-  //     console.log(this.value);
-  //     sankey = d3.sankey()
-  //       .nodeWidth(36)
-  //       .nodePadding(40)
-  //       .size([widthS, heightS])
-  //       .nodeAlign(eval(this.value));
-  //       path = sankey.links();
-  //   //  sankey.nodeAlign();
-  //     //sankey.update(graph);
-  //   //  link.attr("d", d3.sankeyLinkHorizontal());
-  //   build();
-  //   });
-
 }
 
-function highlight(source, target){
+function highlight(source, target) {
   console.log(source)
   console.log(target)
-  var highlighted = link.filter(d =>d.source.name === source && d.target.name === target);
+  var highlighted = link.filter(d => d.source.name === source && d.target.name === target);
   highlighted.style('stroke-opacity', 1);
 };
 
-function unHighlight(){
+function unHighlight() {
   link.style('stroke-opacity', 0.3);
 };
