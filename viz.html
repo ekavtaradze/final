@@ -2,75 +2,15 @@
 
 <head lang=en>
   <link rel="shortcut icon" href="#">
+  <link rel="stylesheet" href="CSS/viz.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
   <script src="https://unpkg.com/d3-v6-tip@1.0.6/build/d3-v6-tip.js"></script>
   <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
-
   <script src="scripts/worldmap.js"> </script>
   <script src="scripts/sankey.js"> </script>
   <script src="scripts/links.js"></script>
   <title> World Map - Astronaut</title>
-  <style>
-    .node rect {
-      fill-opacity: .9;
-      shape-rendering: crispEdges;
-    }
-
-    .node text {
-      pointer-events: none;
-      text-shadow: 0 1px 0 #fff;
-    }
-
-    .link {
-      fill: none;
-      /* stroke: darkblue; */
-      stroke-opacity: .3;
-    }
-
-    .link:hover {
-      stroke-opacity: .7;
-    }
-
-
-    .map {
-      background-color: lightsteelblue;
-      margin: auto;
-      width: 80%;
-      position: relative;
-    }
-
-    .sankey {
-      position: relative;
-      margin: auto;
-      width: 80%;
-    }
-    ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 100px;
-    background-color: #f1f1f1;
-    }
-
-    li a {
-    display: block;
-    color: #000;
-    padding: 8px 16px;
-    text-decoration: none;
-    }
-
-    /* Change the link color on hover */
-    li a:hover {
-    background-color: #555;
-    color: white;
-    }
-
-    .block{
-      display: inline-block;
-      position: absolute;
-    }
-  </style>
 </head>
 
 <body>
