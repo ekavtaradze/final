@@ -27,7 +27,7 @@ function makeSankey(data) {
     .attr("height", heightS + marginS.top + marginS.bottom)
     .append("g")
     .attr("transform",
-      "translate(" + marginS.left + "," + marginS.top + ")");
+      "translate(" + 0 + "," + marginS.top + ")");
 
   var defs = svgSankey.append("defs");
   defs.append("pattern")
@@ -110,9 +110,9 @@ function makeSankey(data) {
       ])
       .range([
         '#90eb9d', '#f9d057', '#cc4040',
-        '#B86125', '#003087', '#4b5320',
+        '#B86125', '#3eb0f7', '#4b5320',
         '#f29e2e', '#a77C29', '#000048',
-        '#377bfb', 'green', '#8b0000',
+        '#175873', 'green', '#8b0000',
         '#f2952e', '#F04A00', 'grey'
       ]);
 
