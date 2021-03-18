@@ -7,8 +7,6 @@ TEAM: Elene Kavtaradze, Ashwin Pai, Nicolas Fish, Benjamin M'sadoques
 
 ### Github repo: https://github.com/ekavtaradze/final/tree/main
 
-## Link to initial proposal: <br>https://docs.google.com/document/d/1ox2JzEldCwTgkCKxna-jLT34oJwoHd9bM_2vRIvY-AY/edit?usp=sharing
-
 
 Resources Used
 ---
